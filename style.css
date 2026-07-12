@@ -1,0 +1,33 @@
+body {
+    background-color: #fdf6f0;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#app {
+    text-align: center;
+    padding: 20px;
+}
+
+textarea {
+    width: 300px;
+    height: 100px;
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #d680a1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
