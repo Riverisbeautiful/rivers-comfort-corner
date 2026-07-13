@@ -17,16 +17,20 @@
         <div class="interactive-section">
             <button id="hugBtn">Send a Digital Hug</button>
             <button id="gameBtn">Get a Sweet Reminder</button>
-            <p id="messageArea"></p>
         </div>
     </div>
 
-    <!-- Removed class="hidden" here so it's controlled by CSS -->
-    <div id="hugOverlay">
-        <div class="hug-content">
+    <div id="hugOverlay" class="overlay">
+        <div class="content">
             <h2>Sending you the warmest hug!</h2>
-            <p>I'm right here with you. You've got this.</p>
             <button id="closeHugBtn">Close</button>
+        </div>
+    </div>
+
+    <div id="gameOverlay" class="overlay">
+        <div class="content">
+            <h2 id="affirmationText">Loading...</h2>
+            <button id="closeGameBtn">Close</button>
         </div>
     </div>
     
