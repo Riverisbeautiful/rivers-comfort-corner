@@ -1,17 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
     (function(){ emailjs.init("RETQEL0saMrVGt7oV"); })();
 
-    // Logic for Send
+    // Diary/Send Logic
     document.getElementById('sendBtn').addEventListener('click', () => {
         const note = document.getElementById('riverNote').value;
-        if(!note) return;
-        emailjs.send("service_xac90mk", "template_q4hqvuc", { message: note }).then(() => {
-            alert("Sent to you!");
+        if(!note) { alert("Please write something first!"); return; }
+        emailjs.send("service_xac90mk", "template_q4hqvuc", { 
+            message: "Diary Entry: " + note,
+            date: new Date().toLocaleString()
+        }).then(() => {
+            alert("Your thoughts have been saved to our journal. I'm listening.");
             document.getElementById('riverNote').value = "";
         });
     });
 
-    // Logic for Hugs
+    // Mood Slider Logic
+    document.getElementById('sendMoodBtn').addEventListener('click', () => {
+        const moodMap = { 1: "Low", 2: "A bit down", 3: "Okay", 4: "Good", 5: "Great!" };
+        const moodText = moodMap[document.getElementById('moodSlider').value];
+        emailjs.send("service_xac90mk", "template_q4hqvuc", { 
+            message: "River's mood update: " + moodText 
+        }).then(() => {
+            alert("Mood updated! Thanks for sharing, love.");
+        });
+    });
+
+    // Hugs Logic
     const hugOverlay = document.getElementById('hugOverlay');
     document.getElementById('hugBtn').addEventListener('click', () => {
         hugOverlay.style.display = 'flex';
@@ -29,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(hugBtn.dataset.intervalId);
     });
 
-    // NEW Logic for Game
+    // Game Logic
     const gameOverlay = document.getElementById('gameOverlay');
     document.getElementById('gameBtn').addEventListener('click', () => {
         const msgs = ["You're amazing!", "Keep shining!", "You're doing great!", "I'm so proud of you!"];
