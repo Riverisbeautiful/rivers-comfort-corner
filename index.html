@@ -11,8 +11,22 @@
         <h1>Hey River, how are you feeling?</h1>
         <p class="subtitle">You are loved, heard, and appreciated. Feel free to share a highlight, a worry, or just say hello.</p>
         
-        <textarea id="riverNote" placeholder="Write something..."></textarea>
-        <button id="sendBtn">Send with Love</button>
+        <!-- Diary Section -->
+        <div class="diary-section">
+            <textarea id="riverNote" placeholder="Write what's on your mind, River..."></textarea>
+            <button id="sendBtn">Save to our Journal</button>
+        </div>
+
+        <!-- Mood Section -->
+        <div class="mood-section">
+            <h3>How are you feeling right now?</h3>
+            <input type="range" id="moodSlider" min="1" max="5" value="3">
+            <div class="slider-labels">
+                <span>Low</span>
+                <span>Great</span>
+            </div>
+            <button id="sendMoodBtn">Send Mood Update</button>
+        </div>
         
         <div class="interactive-section">
             <button id="hugBtn">Send a Digital Hug</button>
@@ -20,6 +34,7 @@
         </div>
     </div>
 
+    <!-- Hug Overlay -->
     <div id="hugOverlay" class="overlay">
         <div class="content">
             <h2>Sending you the warmest hug!</h2>
@@ -27,6 +42,7 @@
         </div>
     </div>
 
+    <!-- Affirmation Overlay -->
     <div id="gameOverlay" class="overlay">
         <div class="content">
             <h2 id="affirmationText">Loading...</h2>
