@@ -1,6 +1,6 @@
 body { 
-    background-image: url('rivercat.jpg');
-    background-size: cover;
+    background-image: url('Rivercat.jpg');
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -15,7 +15,7 @@ body {
 }
 
 #app { 
-    background-color: rgba(255, 255, 255, 0.88); 
+    background-color: rgba(255, 255, 255, 0.6); 
     padding: 40px; 
     border-radius: 20px; 
     box-shadow: 0 4px 20px rgba(0,0,0,0.25); 
