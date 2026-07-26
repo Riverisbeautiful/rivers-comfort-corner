@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const msgs = [
             "You're the best thing that ever happened to me.",
             "I'm counting down the days until I see you.",
-            "Remember that you are so deeply loved.",
-            "Toby and I are sending you the biggest hugs!",
+            "River you are my disney princess.",
+            "I am sending you and toby the biggest hugs!",
             "You make my world so much brighter."
         ];
         document.getElementById('affirmationText').innerText = msgs[Math.floor(Math.random() * msgs.length)];
