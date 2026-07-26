@@ -15,7 +15,6 @@ body {
 }
 
 #app { 
-    /* Lowered opacity to 0.15 so it's barely there */
     background-color: rgba(255, 255, 255, 0.15); 
     padding: 40px; 
     border-radius: 20px; 
@@ -35,9 +34,24 @@ button:hover { background-color: #bf7391; }
 .entry-card { background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
 .entry-date { font-size: 10px; color: #999; margin-bottom: 4px; display: block; }
 
-.mood-section { margin: 20px 0; padding-top: 15px; border-top: 1px solid #eee; }
+.mood-section { margin: 20px 0; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3); }
+
+/* Made mood header and slider labels stand out clearly against the background */
+.mood-section h3 { 
+    color: #ffffff; 
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); 
+}
+
 #moodSlider { width: 100%; cursor: pointer; accent-color: #d680a1; }
-.slider-labels { display: flex; justify-content: space-between; font-size: 12px; color: #888; margin-bottom: 10px; }
+
+.slider-labels { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 12px; 
+    color: #ffffff; 
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); 
+    margin-bottom: 10px; 
+}
 
 .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 182, 193, 0.95); justify-content: center; align-items: center; z-index: 1000; flex-direction: column; }
 .content { background: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
