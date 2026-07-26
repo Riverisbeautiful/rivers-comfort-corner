@@ -1,57 +1,51 @@
 (function(){ emailjs.init("RETQEL0saMrVGt7oV"); })();
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Script loaded and ready");
-
+    
     // Diary/Send Logic
-    const sendBtn = document.getElementById('sendBtn');
-    if (sendBtn) {
-        sendBtn.addEventListener('click', () => {
-            const note = document.getElementById('riverNote').value;
-            if(!note) { alert("Please write something first!"); return; }
-            emailjs.send("service_xac90mk", "template_q4hqvuc", { 
-                message: "Diary Entry: " + note,
-                date: new Date().toLocaleString()
-            }).then(() => {
-                alert("Your thoughts have been saved to our journal. I'm listening my love.");
-                document.getElementById('riverNote').value = "";
-            }).catch(err => console.error("Diary Error:", err));
+    document.getElementById('sendBtn').addEventListener('click', () => {
+        const note = document.getElementById('riverNote').value;
+        if(!note) { alert("Please write something first!"); return; }
+        emailjs.send("service_xac90mk", "template_q4hqvuc", { 
+            message: "Diary Entry: " + note
+        }).then(() => {
+            alert("Your thoughts have been saved to our journal. I'm listening.");
+            document.getElementById('riverNote').value = "";
         });
-    }
+    });
 
     // Mood Slider Logic
-    const sendMoodBtn = document.getElementById('sendMoodBtn');
-    if (sendMoodBtn) {
-        sendMoodBtn.addEventListener('click', () => {
-            console.log("Mood button clicked!"); // This will confirm the button is working
-            const slider = document.getElementById('moodSlider');
-            const moodMap = { 1: "Low", 2: "A bit down", 3: "Okay", 4: "Good", 5: "Great!" };
-            const moodText = moodMap[slider.value];
-            
-            emailjs.send("service_xac90mk", "template_q4hqvuc", { 
-                message: "River's mood update: " + moodText 
-            }).then(() => {
-                alert("Mood updated! Thanks for sharing, love.");
-            }).catch(err => {
-                console.error("Mood Error:", err);
-                alert("Oops! Something went wrong sending the mood.");
-            });
+    document.getElementById('sendMoodBtn').addEventListener('click', () => {
+        const moodMap = { 1: "Low", 2: "A bit down", 3: "Okay", 4: "Good", 5: "Great!" };
+        const moodText = moodMap[document.getElementById('moodSlider').value];
+        emailjs.send("service_xac90mk", "template_q4hqvuc", { 
+            message: "River's mood update: " + moodText 
+        }).then(() => {
+            alert("Mood updated! Thanks for sharing, love.");
         });
-    }
+    });
 
-    // Overlays
-    const hugBtn = document.getElementById('hugBtn');
-    const hugOverlay = document.getElementById('hugOverlay');
-    if (hugBtn) {
-        hugBtn.addEventListener('click', () => {
-            hugOverlay.style.display = 'flex';
-        });
-    }
+    // Hug Logic
+    document.getElementById('hugBtn').addEventListener('click', () => {
+        document.getElementById('hugOverlay').style.display = 'flex';
+    });
+    document.getElementById('closeHugBtn').addEventListener('click', () => {
+        document.getElementById('hugOverlay').style.display = 'none';
+    });
 
-    const closeHugBtn = document.getElementById('closeHugBtn');
-    if (closeHugBtn) {
-        closeHugBtn.addEventListener('click', () => {
-            hugOverlay.style.display = 'none';
-        });
-    }
+    // Game/Reminder Logic
+    document.getElementById('gameBtn').addEventListener('click', () => {
+        const msgs = [
+            "You're the best thing that ever happened to me.",
+            "I'm counting down the days until I see you.",
+            "Remember that you are so deeply loved.",
+            "Toby and I are sending you the biggest hugs!",
+            "You make my world so much brighter."
+        ];
+        document.getElementById('affirmationText').innerText = msgs[Math.floor(Math.random() * msgs.length)];
+        document.getElementById('gameOverlay').style.display = 'flex';
+    });
+    document.getElementById('closeGameBtn').addEventListener('click', () => {
+        document.getElementById('gameOverlay').style.display = 'none';
+    });
 });
