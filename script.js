@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Could not find element with id 'sendBtn'");
     }
 
-    // Function to fetch and display past entries
+    // Function to fetch and display past entries (Case-Insensitive Fix)
     function loadJournalEntries() {
         const entriesContainer = document.getElementById('entriesList');
         if (!entriesContainer) return;
@@ -73,9 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 entriesContainer.innerHTML = "";
                 data.reverse().forEach(entry => {
+                    const keys = Object.keys(entry);
+                    const dateKey = keys.find(k => k.toLowerCase() === 'date') || keys[0];
+                    const messageKey = keys.find(k => k.toLowerCase() === 'message' || k.toLowerCase() === 'note' || k.toLowerCase() === 'text') || keys[1];
+                    
+                    const entryDate = entry[dateKey] || 'Recent';
+                    const entryMessage = entry[messageKey] || entry[keys[1]] || '';
+
                     const card = document.createElement('div');
                     card.className = 'entry-card';
-                    card.innerHTML = `<span class="entry-date">${entry.date || 'Recent'}</span>${entry.message}`;
+                    card.innerHTML = `<span class="entry-date">${entryDate}</span>${entryMessage}`;
                     entriesContainer.appendChild(card);
                 });
             })
