@@ -14,10 +14,17 @@
             <h1>Our Safe Space 💜</h1>
         </header>
 
-        <!-- Mood Section -->
+        <!-- Mood Section with Number Scale -->
         <div class="mood-section">
             <h3>How are you feeling today?</h3>
             <input type="range" min="1" max="5" value="3" class="slider" id="moodSlider">
+            <div class="slider-numbers">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+            </div>
             <button id="sendMoodBtn" class="action-btn">Send Mood Update</button>
         </div>
 
@@ -34,12 +41,6 @@
             </div>
         </div>
 
-        <!-- Interactive Extras -->
-        <div class="extras-section">
-            <button id="hugBtn" class="action-btn">Send a Hug 🤗</button>
-            <button id="gameBtn" class="action-btn">Daily Affirmation ✨</button>
-        </div>
-
         <!-- Journal Entry Section -->
         <div class="journal-section">
             <h3>Journal Entry</h3>
@@ -47,28 +48,12 @@
             <button id="sendBtn" class="action-btn">Save Entry</button>
         </div>
 
-        <!-- Journal History Section (Fixed ID) -->
+        <!-- Journal History Section -->
         <div class="history-section">
             <h3>Journal History 📖</h3>
             <div id="entriesList">
                 <p style="font-size:12px; color:#888; text-align:center;">Loading entries...</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Hug Overlay Modal -->
-    <div id="hugOverlay" class="overlay" style="display:none;">
-        <div class="overlay-content">
-            <p>🤗 *Sending you the tightest, warmest hug right now!* 🤗</p>
-            <button id="closeHugBtn" class="action-btn">Close</button>
-        </div>
-    </div>
-
-    <!-- Affirmation Overlay Modal -->
-    <div id="gameOverlay" class="overlay" style="display:none;">
-        <div class="overlay-content">
-            <p id="affirmationText">Loading...</p>
-            <button id="closeGameBtn" class="action-btn">Close</button>
         </div>
     </div>
 
