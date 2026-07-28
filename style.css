@@ -1,4 +1,4 @@
-/* Base Background and Reset */
+/* Base Reset and Background */
 * {
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,7 +17,7 @@ body {
     min-height: 100vh;
 }
 
-/* Main Transparent App Container */
+/* App Container */
 #app {
     background-color: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(8px);
@@ -37,8 +37,8 @@ header h1 {
     margin-bottom: 30px;
 }
 
-/* High-Contrast Backing Cards for Readability */
-.mood-section, .quiz-section, .journal-section {
+/* Card Boxes */
+.mood-section, .quiz-section, .journal-section, .history-section {
     background: rgba(255, 255, 255, 0.85);
     padding: 20px;
     border-radius: 12px;
@@ -68,7 +68,7 @@ h3 {
     margin-top: 10px;
 }
 
-/* Quiz Specific Styling */
+/* Quiz Styling */
 #question-text {
     font-size: 14px;
     color: #333;
@@ -159,4 +159,38 @@ textarea:focus {
 
 #save-btn:hover {
     background-color: #c0698a;
+}
+
+/* History Cards */
+.empty-msg {
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+    margin: 0;
+}
+
+.history-card {
+    background: #fff9fb;
+    border: 1px solid #fce4ec;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.history-card:last-child {
+    margin-bottom: 0;
+}
+
+.history-date {
+    font-size: 11px;
+    color: #d680a1;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.history-text {
+    font-size: 13px;
+    color: #444;
+    white-space: pre-wrap;
+    margin: 0;
 }
