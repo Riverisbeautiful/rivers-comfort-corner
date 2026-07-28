@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Digital Journal</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Include EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -15,8 +17,8 @@
         <!-- Mood Section -->
         <div class="mood-section">
             <h3>How are you feeling today?</h3>
-            <input type="range" min="1" max="10" value="5" class="slider" id="mood-slider">
-            <p id="mood-text">Mood Level: <span id="mood-value">5</span></p>
+            <input type="range" min="1" max="5" value="3" class="slider" id="moodSlider">
+            <button id="sendMoodBtn" class="action-btn">Send Mood Update</button>
         </div>
 
         <!-- Mini Quiz Section -->
@@ -32,19 +34,41 @@
             </div>
         </div>
 
+        <!-- Interactive Extras -->
+        <div class="extras-section">
+            <button id="hugBtn" class="action-btn">Send a Hug 🤗</button>
+            <button id="gameBtn" class="action-btn">Daily Affirmation ✨</button>
+        </div>
+
         <!-- Journal Entry Section -->
         <div class="journal-section">
             <h3>Journal Entry</h3>
-            <textarea id="journal-entry" placeholder="Write your thoughts here..."></textarea>
-            <button id="save-btn">Save Entry</button>
+            <textarea id="riverNote" placeholder="Write your thoughts here..."></textarea>
+            <button id="sendBtn" class="action-btn">Save Entry</button>
         </div>
 
-        <!-- Restored Journal History Section -->
+        <!-- Journal History Section (Fixed ID) -->
         <div class="history-section">
             <h3>Journal History 📖</h3>
-            <div id="journal-history-list">
-                <p class="empty-msg">No journal entries saved yet.</p>
+            <div id="entriesList">
+                <p style="font-size:12px; color:#888; text-align:center;">Loading entries...</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Hug Overlay Modal -->
+    <div id="hugOverlay" class="overlay" style="display:none;">
+        <div class="overlay-content">
+            <p>🤗 *Sending you the tightest, warmest hug right now!* 🤗</p>
+            <button id="closeHugBtn" class="action-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Affirmation Overlay Modal -->
+    <div id="gameOverlay" class="overlay" style="display:none;">
+        <div class="overlay-content">
+            <p id="affirmationText">Loading...</p>
+            <button id="closeGameBtn" class="action-btn">Close</button>
         </div>
     </div>
 
