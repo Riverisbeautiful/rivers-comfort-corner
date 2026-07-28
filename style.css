@@ -1,64 +1,162 @@
-body { 
+/* Base Background and Reset */
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
     background-image: url('rivercat.jpg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     background-attachment: fixed;
-    background-color: #fdf6f0; 
-
-    font-family: 'Arial', sans-serif; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    min-height: 100vh; 
-    margin: 0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-#app { 
-    background-color: rgba(255, 255, 255, 0.15); 
-    padding: 40px; 
-    border-radius: 20px; 
-    box-shadow: 0 4px 20px rgba(0,0,0,0.25); 
-    text-align: center; 
-    max-width: 420px; 
-    width: 90%; 
+/* Main Transparent App Container */
+#app {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    width: 90%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin: 40px 0;
 }
 
-.subtitle { color: #555; font-size: 14px; margin-bottom: 20px; }
-textarea { width: 100%; height: 100px; padding: 15px; border: 2px solid #fce4ec; border-radius: 15px; background-color: #fff9fb; box-sizing: border-box; resize: none; margin-bottom: 10px; }
-button { padding: 10px 20px; background-color: #d680a1; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; transition: background-color 0.3s; }
-button:hover { background-color: #bf7391; }
-
-.journal-history { margin: 20px 0; text-align: left; background: #fff9fb; padding: 15px; border-radius: 12px; border: 1px solid #fce4ec; max-height: 180px; overflow-y: auto; }
-.journal-history h3 { font-size: 15px; color: #d680a1; margin-top: 0; margin-bottom: 10px; text-align: center; }
-.entry-card { background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-.entry-date { font-size: 10px; color: #999; margin-bottom: 4px; display: block; }
-
-.mood-section { 
-    margin: 20px 0; 
-    padding: 15px; 
-    background: rgba(255, 255, 255, 0.85); 
-    border-radius: 12px; 
-    border: 1px solid #fce4ec; 
+header h1 {
+    color: #fff;
+    text-align: center;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
 }
 
-.mood-section h3 { 
-    font-size: 15px; 
-    color: #d680a1; 
-    margin-top: 0; 
-    margin-bottom: 10px; 
-    text-align: center; 
+/* High-Contrast Backing Cards for Readability */
+.mood-section, .quiz-section, .journal-section {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid #fce4ec;
 }
 
-#moodSlider { width: 100%; cursor: pointer; accent-color: #d680a1; }
-
-.slider-labels { 
-    display: flex; 
-    justify-content: space-between; 
-    font-size: 12px; 
-    color: #d680a1; 
-    margin-bottom: 10px; 
+h3 {
+    font-size: 16px;
+    color: #d680a1;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
-.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 182, 193, 0.95); justify-content: center; align-items: center; z-index: 1000; flex-direction: column; }
-.content { background: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+/* Mood Slider Styling */
+.slider {
+    width: 100%;
+    accent-color: #d680a1;
+    cursor: pointer;
+}
+
+#mood-text {
+    text-align: center;
+    color: #d680a1;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Quiz Specific Styling */
+#question-text {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.btn-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.btn-grid button {
+    background-color: #fff9fb;
+    color: #d680a1;
+    border: 1px solid #fce4ec;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.btn-grid button:hover {
+    background-color: #d680a1;
+    color: white;
+}
+
+.hide {
+    display: none !important;
+}
+
+#score-container {
+    text-align: center;
+}
+
+#score-text {
+    font-size: 16px;
+    color: #d680a1;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+#restart-btn {
+    background-color: #d680a1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#restart-btn:hover {
+    background-color: #c0698a;
+}
+
+/* Journal Styling */
+textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #fce4ec;
+    border-radius: 8px;
+    padding: 10px;
+    resize: none;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #d680a1;
+}
+
+#save-btn {
+    width: 100%;
+    background-color: #d680a1;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#save-btn:hover {
+    background-color: #c0698a;
+}
