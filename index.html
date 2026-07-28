@@ -3,60 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Digital Journal</title>
     <link rel="stylesheet" href="style.css">
-    <title>For River</title>
 </head>
 <body>
     <div id="app">
-        <h1>Hey River, how are you feeling?</h1>
-        <p class="subtitle">You are loved, heard, and appreciated. Feel free to share a highlight, a worry, or just say hello.</p>
-        
-        <!-- Diary Section -->
-        <div class="diary-section">
-            <textarea id="riverNote" placeholder="Write what's on your mind, River..."></textarea>
-            <button id="sendBtn">Save to our Journal</button>
-        </div>
-
-        <!-- Past Entries Journal History Box -->
-        <div class="journal-history">
-            <h3>Our Journal History</h3>
-            <div id="entriesList">Loading past entries...</div>
-        </div>
+        <header>
+            <h1>Our Safe Space 💜</h1>
+        </header>
 
         <!-- Mood Section -->
         <div class="mood-section">
-            <h3>How are you feeling right now?</h3>
-            <input type="range" id="moodSlider" min="1" max="5" value="3">
-            <div class="slider-labels">
-                <span>Low</span>
-                <span>Great</span>
+            <h3>How are you feeling today?</h3>
+            <input type="range" min="1" max="10" value="5" class="slider" id="mood-slider">
+            <p id="mood-text">Mood Level: <span id="mood-value">5</span></p>
+        </div>
+
+        <!-- Mini Quiz Section -->
+        <div class="quiz-section">
+            <h3>Mini Quiz 💜</h3>
+            <div id="quiz-container">
+                <p id="question-text">Loading question...</p>
+                <div id="answer-buttons" class="btn-grid">
+                    <!-- Buttons will be generated here by JavaScript -->
+                </div>
             </div>
-            <button id="sendMoodBtn">Send Mood Update</button>
+            <div id="score-container" class="hide">
+                <p id="score-text"></p>
+                <button id="restart-btn" class="hide">Play Again</button>
+            </div>
         </div>
-        
-        <div class="interactive-section">
-            <button id="hugBtn">Send a Digital Hug</button>
-            <button id="gameBtn">Get a Sweet Reminder</button>
+
+        <!-- Journal Entry Section -->
+        <div class="journal-section">
+            <h3>Journal</h3>
+            <textarea id="journal-entry" placeholder="Write your thoughts here..."></textarea>
+            <button id="save-btn">Save Entry</button>
         </div>
     </div>
 
-    <!-- Hug Overlay -->
-    <div id="hugOverlay" class="overlay">
-        <div class="content">
-            <h2>Sending you the warmest hug!</h2>
-            <button id="closeHugBtn">Close</button>
-        </div>
-    </div>
-
-    <!-- Affirmation Overlay -->
-    <div id="gameOverlay" class="overlay">
-        <div class="content">
-            <h2 id="affirmationText">Loading...</h2>
-            <button id="closeGameBtn">Close</button>
-        </div>
-    </div>
-    
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
