@@ -27,106 +27,33 @@
             <button id="sendMoodBtn" class="action-btn">Send Mood Update</button>
         </div>
 
-        <!-- Full 8-Question Mini Quiz Section -->
+        <!-- Interactive Step-by-Step Quiz Section -->
         <div class="section-block quiz-section">
             <h3>Our Mini Quiz 🧩</h3>
-            <div id="quizContainer">
-                <!-- Question 1 -->
-                <div class="quiz-item" data-q="1">
-                    <p class="quiz-question-text">1. The Origin Story: When was our first call?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn" data-answer="wrong">August 14, 2023</button>
-                        <button class="action-btn quiz-btn" data-answer="correct">September 28, 2023</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">October 5, 2023</button>
-                    </div>
-                    <p class="quiz-result"></p>
-                </div>
+            
+            <!-- Quiz Start Screen -->
+            <div id="quizStartScreen" class="quiz-screen text-center">
+                <p>Ready to test how well you know us?</p>
+                <button id="startQuizBtn" class="action-btn">Start Quiz 🚀</button>
+            </div>
 
-                <!-- Question 2 -->
-                <div class="quiz-item" data-q="2">
-                    <p class="quiz-question-text">2. The Pet Parent: Who does Toby the cat consider his absolute favorite?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn" data-answer="correct">River</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">Antonio</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">The delivery driver</button>
-                    </div>
-                    <p class="quiz-result"></p>
+            <!-- Active Question Screen (Hidden by default) -->
+            <div id="quizPlayScreen" class="quiz-screen" style="display: none;">
+                <div id="quizCounter" class="quiz-counter">Question 1 of 9</div>
+                <div class="quiz-item active-quiz-item">
+                    <p id="quizQuestionText" class="quiz-question-text"></p>
+                    <div id="quizOptionsContainer" class="quiz-options"></div>
+                    <p id="quizResultText" class="quiz-result"></p>
                 </div>
+                <button id="nextQuestionBtn" class="action-btn" style="display: none;">Next Question ➡️</button>
+            </div>
 
-                <!-- Question 3 -->
-                <div class="quiz-item" data-q="3">
-                    <p class="quiz-question-text">3. The Favorites: What is our go-to food choice?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn" data-answer="wrong">Fancy Italian Bistro</button>
-                        <button class="action-btn quiz-btn" data-answer="correct">Panda Express</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">Homemade sushi</button>
-                    </div>
-                    <p class="quiz-result"></p>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="quiz-item" data-q="4">
-                    <p class="quiz-question-text">4. The Gamer/Hobbyist: What game could be played for hours?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn" data-answer="correct">Call of Duty</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">World of Warcraft</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">Snake</button>
-                    </div>
-                    <p class="quiz-result"></p>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="quiz-item" data-q="5">
-                    <p class="quiz-question-text">5. The Travel Bug: Where is the best place to travel?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn" data-answer="wrong">A tropical island beach</button>
-                        <button class="action-btn quiz-btn" data-answer="correct">Wherever my girlfriend happens to be</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">The sun</button>
-                    </div>
-                    <p class="quiz-result"></p>
-                </div>
-
-                <!-- Question 6 -->
-                <div class="quiz-item" data-q="6">
-                    <p class="quiz-question-text">6. The Habits: Who is always right?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn" data-answer="wrong">Antonio</button>
-                        <button class="action-btn quiz-btn" data-answer="correct">She is</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">Toby</button>
-                    </div>
-                    <p class="quiz-result"></p>
-                </div>
-
-                <!-- Question 7 -->
-                <div class="quiz-item" data-q="7">
-                    <p class="quiz-question-text">7. The Inside Joke: What's our signature humor style?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn" data-answer="wrong">Dad jokes</button>
-                        <button class="action-btn quiz-btn" data-answer="correct">Bullyism</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">Sarcastic cat quotes</button>
-                    </div>
-                    <p class="quiz-result"></p>
-                </div>
-
-                <!-- Question 8 -->
-                <div class="quiz-item" data-q="8">
-                    <p class="quiz-question-text">8. The Sweetest Memory: What moment stands out the most?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn single-option" data-answer="correct">The first day we ever messaged</button>
-                    </div>
-                    <p class="quiz-result"></p>
-                </div>
-
-                <!-- Question 9 -->
-                <div class="quiz-item" data-q="9">
-                    <p class="quiz-question-text">9. The Future: What does looking ahead look like?</p>
-                    <div class="quiz-options">
-                        <button class="action-btn quiz-btn" data-answer="wrong">Living out of a suitcase</button>
-                        <button class="action-btn quiz-btn" data-answer="correct">Right where we're supposed to be, right next to each other 💜</button>
-                        <button class="action-btn quiz-btn" data-answer="wrong">Always traveling</button>
-                    </div>
-                    <p class="quiz-result"></p>
-                </div>
+            <!-- Quiz Results Screen (Hidden by default) -->
+            <div id="quizResultScreen" class="quiz-screen" style="display: none; text-align: center;">
+                <h4>Quiz Completed! 🎉</h4>
+                <p id="quizFinalScore" style="font-weight: bold; font-size: 16px; margin: 10px 0;"></p>
+                <p id="quizCuteMessage" style="font-size: 14px; margin-bottom: 15px;"></p>
+                <button id="restartQuizBtn" class="action-btn">Retake Quiz 🔄</button>
             </div>
         </div>
 
@@ -146,6 +73,21 @@
         <!-- Extras Section: Play Snake Button -->
         <div class="extras-section">
             <button id="snakeBtn" class="action-btn">Play Snake 🐍</button>
+        </div>
+    </div>
+
+    <!-- Prize Popup Modal (For Perfect Score) -->
+    <div id="prizeOverlay" class="overlay" style="display:none;">
+        <div class="overlay-content">
+            <h3>🏆 Perfect Score! 🏆</h3>
+            <p style="font-size: 14px; text-align: center; margin-bottom: 15px;">You know us inside and out! Pick your prize:</p>
+            <div class="prize-options-list" style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                <button class="action-btn prize-btn" data-prize="Meta Horizon Plus">Meta Horizon Plus 🥽</button>
+                <button class="action-btn prize-btn" data-prize="Switch Game of Choice">Switch Game of Choice 🎮</button>
+                <button class="action-btn prize-btn" data-prize="1 Thing Off Your Wishlist">1 Thing Off Your Wishlist ✨</button>
+            </div>
+            <p id="prizeSelectionResult" style="margin-top: 15px; font-weight: bold; font-size: 13px; text-align: center;"></p>
+            <button id="closePrizeBtn" class="action-btn" style="margin-top: 15px; background-color: #888;">Close</button>
         </div>
     </div>
 
