@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Safe Space 💜</title>
     <link rel="stylesheet" href="style.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -14,17 +16,15 @@
         <!-- Mood Tracker Section -->
         <div class="section-block">
             <h3>How are you feeling today?</h3>
-            <input type="range" min="1" max="5" id="moodRange">
-            <div class="mood-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+            <input type="range" min="1" max="5" id="moodRange" value="3">
+            <div class="mood-labels">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+            </div>
             <button id="sendMoodBtn" class="action-btn">Send Mood Update</button>
-        </div>
-
-        <!-- Mini Quiz Section -->
-        <div class="section-block">
-            <h3>Mini Quiz 💜</h3>
-            <p id="quizQuestion">Loading question...</p>
-            <div id="quizOptions"></div>
-            <button id="quizNextBtn" class="action-btn">Play Again</button>
         </div>
 
         <!-- Journal Entry Section -->
