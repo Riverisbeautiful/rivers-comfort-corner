@@ -3,56 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Digital Journal</title>
+    <title>Our Safe Space 💜</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Include EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
-    <div id="app">
-        <header>
-            <h1>Our Safe Space 💜</h1>
-        </header>
 
-        <!-- Mood Section with Number Scale -->
-        <div class="mood-section">
+    <div class="journal-container">
+        <h1>Our Safe Space 💜</h1>
+
+        <!-- Mood Tracker Section -->
+        <div class="section-block">
             <h3>How are you feeling today?</h3>
-            <input type="range" min="1" max="5" value="3" class="slider" id="moodSlider">
-            <div class="slider-numbers">
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-            </div>
+            <input type="range" min="1" max="5" id="moodRange">
+            <div class="mood-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
             <button id="sendMoodBtn" class="action-btn">Send Mood Update</button>
         </div>
 
         <!-- Mini Quiz Section -->
-        <div class="quiz-section">
+        <div class="section-block">
             <h3>Mini Quiz 💜</h3>
-            <div id="quiz-container">
-                <p id="question-text">Loading question...</p>
-                <div id="answer-buttons" class="btn-grid"></div>
-            </div>
-            <div id="score-container" class="hide">
-                <p id="score-text"></p>
-                <button id="restart-btn" class="hide">Play Again</button>
-            </div>
+            <p id="quizQuestion">Loading question...</p>
+            <div id="quizOptions"></div>
+            <button id="quizNextBtn" class="action-btn">Play Again</button>
         </div>
 
         <!-- Journal Entry Section -->
-        <div class="journal-section">
+        <div class="section-block">
             <h3>Journal Entry</h3>
-            <textarea id="riverNote" placeholder="Write your thoughts here..."></textarea>
-            <button id="sendBtn" class="action-btn">Save Entry</button>
+            <textarea id="journalInput" placeholder="Write your thoughts here..."></textarea>
+            <button id="saveJournalBtn" class="action-btn">Save Entry</button>
         </div>
 
         <!-- Journal History Section -->
-        <div class="history-section">
+        <div class="section-block">
             <h3>Journal History 📖</h3>
-            <div id="entriesList">
-                <p style="font-size:12px; color:#888; text-align:center;">Loading entries...</p>
+            <div id="journalHistoryList">Loading entries...</div>
+        </div>
+
+        <!-- Extras Section: Play Snake Button -->
+        <div class="extras-section" style="margin-top: 20px; text-align: center;">
+            <button id="snakeBtn" class="action-btn">Play Snake 🐍</button>
+        </div>
+    </div>
+
+    <!-- Snake Game Overlay Modal -->
+    <div id="snakeOverlay" class="overlay" style="display:none;">
+        <div class="overlay-content">
+            <h3>Classic Snake 🐍</h3>
+            <canvas id="snakeCanvas" width="280" height="280"></canvas>
+            <p id="snakeScore">Score: 0</p>
+            
+            <div class="snake-controls">
+                <div></div>
+                <button id="upBtn" class="action-btn">⬆️</button>
+                <div></div>
+                <button id="leftBtn" class="action-btn">⬅️</button>
+                <button id="downBtn" class="action-btn">⬇️</button>
+                <button id="rightBtn" class="action-btn">➡️</button>
+            </div>
+
+            <div class="snake-modal-buttons">
+                <button id="startSnakeBtn" class="action-btn">Start Game</button>
+                <button id="closeSnakeBtn" class="action-btn">Close</button>
             </div>
         </div>
     </div>
