@@ -72,8 +72,7 @@ const quizQuestions = [
     }
 ];
 
-// Replace this with your actual SheetDB API URL
-const SHEETDB_API_URL = 'YOUR_SHEETDB_API_URL_HERE';
+const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/xb51jgx377pa0';
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -222,7 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 journalHistoryList.innerHTML = '';
-                // Reverse data so newest entries show up first if stored sequentially
                 data.reverse().forEach(entry => {
                     const card = document.createElement('div');
                     card.className = 'entry-card';
