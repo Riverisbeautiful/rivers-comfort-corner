@@ -190,14 +190,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Prize Selection Handling
+    // --- Prize Selection & EmailJS Notification ---
     const prizeBtns = document.querySelectorAll('.prize-btn');
     prizeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const prizeName = btn.getAttribute('data-prize');
             if (prizeSelectionResult) {
-                prizeSelectionResult.textContent = `Yay! You selected: ${prizeName} 🎉 Let Antonio know!`;
+                prizeSelectionResult.textContent = `Yay! You selected: ${prizeName} 🎉 Emailing Antonio now!`;
                 prizeSelectionResult.style.color = '#ffd1dc';
+            }
+
+            // Using your retrieved EmailJS credentials
+            if (window.emailjs) {
+                emailjs.send('service_xac90mk', 'template_q4hqvuc', {
+                    prize_name: prizeName,
+                    message: `She just won the quiz and picked her prize: ${prizeName}!`
+                }, 'RETQEL0saMrVGt7oV')
+                .then(() => {
+                    console.log('Prize notification email sent successfully!');
+                })
+                .catch(err => {
+                    console.error('Email notification failed:', err);
+                });
             }
         });
     });
@@ -209,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Resilient Journal History Logic ---
+    // --- Resilient Journal History Logic (With Custom Text Styling) ---
     const saveJournalBtn = document.getElementById('saveJournalBtn');
     const journalInput = document.getElementById('journalInput');
     const journalHistoryList = document.getElementById('journalHistoryList');
@@ -218,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!journalHistoryList) return;
         
         if (!entries || entries.length === 0) {
-            journalHistoryList.innerHTML = '<p style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 13px;">No journal entries yet. Write one above! 💜</p>';
+            journalHistoryList.innerHTML = '<p style="color: #ffd1dc; text-shadow: 0 1px 3px rgba(0,0,0,0.9); font-size: 13px;">No journal entries yet. Write one above! 💜</p>';
             return;
         }
 
@@ -231,8 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const entryDate = entry.date || entry.timestamp || entry.created_at || Object.values(entry)[0] || 'Recent entry';
             
             card.innerHTML = `
-                <span class="entry-date" style="display: block; font-weight: bold; margin-bottom: 4px; color: #ffd1dc;">${entryDate}</span>
-                <p style="margin: 0; white-space: pre-wrap; color: #fff;">${entryText}</p>
+                <span class="entry-date" style="display: block; font-weight: bold; margin-bottom: 4px; color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.9);">${entryDate}</span>
+                <p style="margin: 0; white-space: pre-wrap; color: #fff0f5; text-shadow: 0 1px 3px rgba(0,0,0,0.9); font-size: 14px;">${entryText}</p>
             `;
             journalHistoryList.appendChild(card);
         });
@@ -311,14 +325,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Snake Game Modal Logic ---
+    // --- Snake Game Logic & Modal ---
     const snakeBtn = document.getElementById('snakeBtn');
     const snakeOverlay = document.getElementById('snakeOverlay');
     const closeSnakeBtn = document.getElementById('closeSnakeBtn');
+    const startSnakeBtn = document.getElementById('startSnakeBtn');
+    const snakeCanvas = document.getElementById('snakeCanvas');
+
     if (snakeBtn && snakeOverlay) {
-        snakeBtn.addEventListener('click', () => snakeOverlay.style.display = 'flex');
+        snakeBtn.addEventListener('click', () => {
+            snakeOverlay.style.display = 'flex';
+        });
     }
+
     if (closeSnakeBtn && snakeOverlay) {
-        closeSnakeBtn.addEventListener('click', () => snakeOverlay.style.display = 'none');
+        closeSnakeBtn.addEventListener('click', () => {
+            snakeOverlay.style.display = 'none';
+        });
+    }
+
+    if (startSnakeBtn && snakeCanvas) {
+        startSnakeBtn.addEventListener('click', () => {
+            const ctx = snakeCanvas.getContext('2d');
+            let snake = [{x: 10, y: 10}];
+            let food = {x: 5, y: 5};
+            let dx = 1;
+            let dy = 0;
+            
+            if (window.snakeInterval) clearInterval(window.snakeInterval);
+
+            window.snakeInterval = setInterval(() => {
+                const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+                snake.unshift(head);
+                if (head.x === food.x && head.y === food.y) {
+                    food = {x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20)};
+                } else {
+                    snake.pop();
+                }
+
+                ctx.fillStyle = '#222';
+                ctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+                
+                ctx.fillStyle = '#82c91e';
+                snake.forEach(part => ctx.fillRect(part.x * 10, part.y * 10, 9, 9));
+
+                ctx.fillStyle = '#ff6b6b';
+                ctx.fillRect(food.x * 10, food.y * 10, 9, 9);
+            }, 100);
+        });
     }
 });
