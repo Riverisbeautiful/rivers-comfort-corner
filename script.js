@@ -197,14 +197,24 @@ if (closePrizeBtn) {
     });
 }
 
-// --- Journal History Logic Fix ---
+// --- Resynced Journal History Logic ---
 const saveJournalBtn = document.getElementById('saveJournalBtn');
 const journalInput = document.getElementById('journalInput');
 const journalHistoryList = document.getElementById('journalHistoryList');
 
+// Checks both 'journalEntries' and any alternative keys localStorage might have used
+function getStoredJournalEntries() {
+    let entries = JSON.parse(localStorage.getItem('journalEntries'));
+    if (!entries || entries.length === 0) {
+        // Fallback check in case a different key was used previously
+        entries = JSON.parse(localStorage.getItem('entries')) || [];
+    }
+    return entries;
+}
+
 function loadJournalEntries() {
     if (!journalHistoryList) return;
-    const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+    const entries = getStoredJournalEntries();
     
     if (entries.length === 0) {
         journalHistoryList.innerHTML = '<p style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 13px;">No journal entries yet. Write one above! 💜</p>';
@@ -215,9 +225,13 @@ function loadJournalEntries() {
     entries.forEach(entry => {
         const card = document.createElement('div');
         card.className = 'entry-card';
+        // Support both property naming conventions (.text vs .content and .date vs .timestamp)
+        const entryText = entry.text || entry.content || '';
+        const entryDate = entry.date || entry.timestamp || 'Recent entry';
+        
         card.innerHTML = `
-            <span class="entry-date">${entry.date}</span>
-            <p style="margin: 0;">${entry.text}</p>
+            <span class="entry-date">${entryDate}</span>
+            <p style="margin: 0;">${entryText}</p>
         `;
         journalHistoryList.appendChild(card);
     });
@@ -228,7 +242,7 @@ if (saveJournalBtn) {
         const text = journalInput.value.trim();
         if (!text) return;
 
-        const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+        const entries = getStoredJournalEntries();
         const newEntry = {
             date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             text: text
@@ -241,7 +255,7 @@ if (saveJournalBtn) {
     });
 }
 
-// Load entries on page startup
+// Load and resync entries on page startup
 loadJournalEntries();
 
 // --- Mood Update Button Logic ---
