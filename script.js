@@ -6,23 +6,25 @@ document.addEventListener('DOMContentLoaded', () => {
     
     loadJournalEntries();
 
-    // --- Mini Quiz Logic ---
-    const quizButtons = document.querySelectorAll('.quiz-btn');
-    const quizResult = document.getElementById('quizResult');
-    if (quizButtons.length > 0 && quizResult) {
-        quizButtons.forEach(btn => {
+    // --- Full 8-Question Mini Quiz Logic ---
+    const quizItems = document.querySelectorAll('.quiz-item');
+    quizItems.forEach(item => {
+        const buttons = item.querySelectorAll('.quiz-btn');
+        const resultText = item.querySelector('.quiz-result');
+        
+        buttons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const answerType = btn.getAttribute('data-answer');
                 if (answerType === 'correct') {
-                    quizResult.style.color = '#5b9279';
-                    quizResult.innerText = "Correct! River is definitely his favorite human 💜";
+                    resultText.style.color = '#5b9279';
+                    resultText.innerText = "Correct! 💜";
                 } else {
-                    quizResult.style.color = '#c26d90';
-                    quizResult.innerText = "Nice try, but you know who rules the house! Try again. 😉";
+                    resultText.style.color = '#c26d90';
+                    resultText.innerText = "Not quite, try again! 😉";
                 }
             });
         });
-    }
+    });
 
     // --- Journal Entry / Save Logic ---
     const saveJournalBtn = document.getElementById('saveJournalBtn');
