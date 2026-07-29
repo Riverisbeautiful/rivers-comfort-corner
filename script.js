@@ -1,5 +1,110 @@
-// --- Snake Game Logic (Fully Mobile & Keyboard Friendly) ---
+(function(){ emailjs.init("RETQEL0saMrVGt7oV"); })();
+
+const SHEETDB_URL = "https://sheetdb.io/api/v1/xb51jgx377pa0";
+
 document.addEventListener('DOMContentLoaded', () => {
+    
+    loadJournalEntries();
+
+    // --- Journal Entry / Save Logic ---
+    const saveJournalBtn = document.getElementById('saveJournalBtn');
+    if (saveJournalBtn) {
+        saveJournalBtn.addEventListener('click', () => {
+            const noteInput = document.getElementById('journalInput');
+            if (!noteInput) {
+                alert("Error: Could not find text box.");
+                return;
+            }
+            
+            const note = noteInput.value;
+            if(!note.trim()) { 
+                alert("Please write something first!"); 
+                return; 
+            }
+
+            const currentDate = new Date().toLocaleString();
+
+            // 1. Send Email Notification
+            emailjs.send("service_xac90mk", "template_q4hqvuc", { 
+                message: "New Journal Entry: " + note
+            }).catch(err => console.error("EmailJS Error:", err));
+
+            // 2. Save to Google Sheet Database
+            fetch(SHEETDB_URL, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data: [
+                        { date: currentDate, message: note }
+                    ]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Your thoughts have been saved to our journal. I'm listening.");
+                noteInput.value = "";
+                loadJournalEntries();
+            })
+            .catch(error => {
+                console.error('SheetDB Error:', error);
+                alert("Saved to email, but had trouble updating the visual journal list.");
+            });
+        });
+    }
+
+    // --- Function to fetch and display past entries ---
+    function loadJournalEntries() {
+        const entriesContainer = document.getElementById('journalHistoryList');
+        if (!entriesContainer) return;
+
+        fetch(SHEETDB_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (!data || data.length === 0) {
+                    entriesContainer.innerHTML = "<p style='font-size:12px; color:#888; text-align:center;'>No entries yet. Write the first one!</p>";
+                    return;
+                }
+                
+                entriesContainer.innerHTML = "";
+                data.reverse().forEach(entry => {
+                    const keys = Object.keys(entry);
+                    const dateKey = keys.find(k => k.toLowerCase() === 'date') || keys[0];
+                    const messageKey = keys.find(k => k.toLowerCase() === 'message' || k.toLowerCase() === 'note' || k.toLowerCase() === 'text') || keys[1];
+                    
+                    const entryDate = entry[dateKey] || 'Recent';
+                    const entryMessage = entry[messageKey] || entry[keys[1]] || '';
+
+                    const card = document.createElement('div');
+                    card.className = 'entry-card';
+                    card.innerHTML = `<span class="entry-date">${entryDate}</span>${entryMessage}`;
+                    entriesContainer.appendChild(card);
+                });
+            })
+            .catch(() => {
+                entriesContainer.innerHTML = "<p style='font-size:12px; color:#888; text-align:center;'>Could not load past entries.</p>";
+            });
+    }
+
+    // --- Mood Slider Logic ---
+    const sendMoodBtn = document.getElementById('sendMoodBtn');
+    if (sendMoodBtn) {
+        sendMoodBtn.addEventListener('click', () => {
+            const slider = document.getElementById('moodRange');
+            const moodMap = { 1: "Low", 2: "A bit down", 3: "Okay", 4: "Good", 5: "Great!" };
+            const moodText = slider ? moodMap[slider.value] : "Okay";
+            
+            emailjs.send("service_xac90mk", "template_q4hqvuc", { 
+                message: "Mood update: " + moodText 
+            }).then(() => {
+                alert("Mood updated! Thanks for sharing, love.");
+            });
+        });
+    }
+
+    // --- Snake Game Logic ---
     const snakeBtn = document.getElementById('snakeBtn');
     const snakeOverlay = document.getElementById('snakeOverlay');
     const closeSnakeBtn = document.getElementById('closeSnakeBtn');
@@ -57,18 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
         window.removeEventListener("keydown", handleKeyDirection);
         window.addEventListener("keydown", handleKeyDirection);
         
-        if (upBtn) {
-            upBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('UP'); };
-        }
-        if (downBtn) {
-            downBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('DOWN'); };
-        }
-        if (leftBtn) {
-            leftBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('LEFT'); };
-        }
-        if (rightBtn) {
-            rightBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('RIGHT'); };
-        }
+        if (upBtn) { upBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('UP'); }; }
+        if (downBtn) { downBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('DOWN'); }; }
+        if (leftBtn) { leftBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('LEFT'); }; }
+        if (rightBtn) { rightBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('RIGHT'); }; }
 
         gameLoop = setInterval(main, 110);
     }
@@ -144,23 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const goingRight = dx === gridSize;
         const goingLeft = dx === -gridSize;
 
-        if (direction === 'LEFT' && !goingRight) {
-            dx = -gridSize; dy = 0; changingDirection = true;
-        }
-        if (direction === 'UP' && !goingDown) {
-            dx = 0; dy = -gridSize; changingDirection = true;
-        }
-        if (direction === 'RIGHT' && !goingLeft) {
-            dx = gridSize; dy = 0; changingDirection = true;
-        }
-        if (direction === 'DOWN' && !goingUp) {
-            dx = 0; dy = gridSize; changingDirection = true;
-        }
+        if (direction === 'LEFT' && !goingRight) { dx = -gridSize; dy = 0; changingDirection = true; }
+        if (direction === 'UP' && !goingDown) { dx = 0; dy = -gridSize; changingDirection = true; }
+        if (direction === 'RIGHT' && !goingLeft) { dx = gridSize; dy = 0; changingDirection = true; }
+        if (direction === 'DOWN' && !goingUp) { dx = 0; dy = gridSize; changingDirection = true; }
     }
 
     function handleKeyDirection(event) {
         if (!snakeOverlay || snakeOverlay.style.display === 'none') return;
-
         const keyPressed = event.keyCode;
         if (keyPressed === 37 || keyPressed === 65) { event.preventDefault(); changeVel('LEFT'); }
         if (keyPressed === 38 || keyPressed === 87) { event.preventDefault(); changeVel('UP'); }
