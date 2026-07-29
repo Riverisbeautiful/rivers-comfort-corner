@@ -8,7 +8,7 @@ body {
 }
 
 .journal-container {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.94);
     padding: 30px;
     border-radius: 16px;
     max-width: 600px;
@@ -16,14 +16,61 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
+.section-block {
+    margin-bottom: 25px;
+}
+
 h1 {
     color: #d680a1;
+    margin-top: 0;
+    text-align: center;
 }
 
 h3 {
     color: #333;
-    margin-top: 20px;
+    margin-top: 0;
     margin-bottom: 8px;
+}
+
+.toby-card {
+    text-align: center;
+    background: #fdf8fa;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #f0d6e2;
+}
+
+.toby-img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.toby-caption {
+    font-size: 13px;
+    color: #666;
+    margin-top: 6px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+
+.quiz-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.quiz-btn {
+    background-color: #e09ab7;
+    font-size: 13px;
+    padding: 6px 12px;
+}
+
+.quiz-btn:hover {
+    background-color: #d680a1;
 }
 
 .action-btn {
@@ -34,7 +81,8 @@ h3 {
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    margin-top: 8px;
+    margin-top: 10px;
+    display: inline-block;
 }
 
 .action-btn:hover {
@@ -62,7 +110,7 @@ input[type="range"] {
     justify-content: space-between;
     font-size: 14px;
     color: #666;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     width: 100%;
 }
 
@@ -73,6 +121,7 @@ input[type="range"] {
     margin-bottom: 10px;
     border-radius: 4px;
     font-size: 14px;
+    word-break: break-word;
 }
 
 .entry-date {
