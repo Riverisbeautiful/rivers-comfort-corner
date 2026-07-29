@@ -54,6 +54,7 @@ textarea {
 input[type="range"] {
     width: 100%;
     margin: 10px 0 5px 0;
+    box-sizing: border-box;
 }
 
 .mood-labels {
@@ -62,6 +63,23 @@ input[type="range"] {
     font-size: 14px;
     color: #666;
     margin-bottom: 8px;
+    width: 100%;
+}
+
+.entry-card {
+    background: #fdf8fa;
+    border-left: 4px solid #d680a1;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.entry-date {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 4px;
 }
 
 .overlay {
