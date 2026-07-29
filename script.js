@@ -72,208 +72,226 @@ const quizQuestions = [
     }
 ];
 
+// Replace this with your actual SheetDB API URL
+const SHEETDB_API_URL = 'YOUR_SHEETDB_API_URL_HERE';
+
 let currentQuestionIndex = 0;
 let score = 0;
 
-const startQuizBtn = document.getElementById('startQuizBtn');
-const quizStartScreen = document.getElementById('quizStartScreen');
-const quizPlayScreen = document.getElementById('quizPlayScreen');
-const quizResultScreen = document.getElementById('quizResultScreen');
-const quizCounter = document.getElementById('quizCounter');
-const quizQuestionText = document.getElementById('quizQuestionText');
-const quizOptionsContainer = document.getElementById('quizOptionsContainer');
-const quizResultText = document.getElementById('quizResultText');
-const nextQuestionBtn = document.getElementById('nextQuestionBtn');
-const restartQuizBtn = document.getElementById('restartQuizBtn');
-const quizFinalScore = document.getElementById('quizFinalScore');
-const quizCuteMessage = document.getElementById('quizCuteMessage');
-const prizeOverlay = document.getElementById('prizeOverlay');
-const closePrizeBtn = document.getElementById('closePrizeBtn');
-const prizeSelectionResult = document.getElementById('prizeSelectionResult');
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Quiz Logic ---
+    const startQuizBtn = document.getElementById('startQuizBtn');
+    const quizStartScreen = document.getElementById('quizStartScreen');
+    const quizPlayScreen = document.getElementById('quizPlayScreen');
+    const quizResultScreen = document.getElementById('quizResultScreen');
+    const quizCounter = document.getElementById('quizCounter');
+    const quizQuestionText = document.getElementById('quizQuestionText');
+    const quizOptionsContainer = document.getElementById('quizOptionsContainer');
+    const quizResultText = document.getElementById('quizResultText');
+    const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+    const restartQuizBtn = document.getElementById('restartQuizBtn');
+    const quizFinalScore = document.getElementById('quizFinalScore');
+    const quizCuteMessage = document.getElementById('quizCuteMessage');
+    const prizeOverlay = document.getElementById('prizeOverlay');
+    const closePrizeBtn = document.getElementById('closePrizeBtn');
+    const prizeSelectionResult = document.getElementById('prizeSelectionResult');
 
-if (startQuizBtn) {
-    startQuizBtn.addEventListener('click', () => {
-        quizStartScreen.style.display = 'none';
-        quizPlayScreen.style.display = 'block';
-        currentQuestionIndex = 0;
-        score = 0;
-        loadQuestion();
-    });
-}
+    if (startQuizBtn) {
+        startQuizBtn.addEventListener('click', () => {
+            quizStartScreen.style.display = 'none';
+            quizPlayScreen.style.display = 'block';
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+        });
+    }
 
-function loadQuestion() {
-    quizResultText.textContent = '';
-    nextQuestionBtn.style.display = 'none';
-    const q = quizQuestions[currentQuestionIndex];
-    quizCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
-    quizQuestionText.textContent = q.question;
-    quizOptionsContainer.innerHTML = '';
+    function loadQuestion() {
+        quizResultText.textContent = '';
+        nextQuestionBtn.style.display = 'none';
+        const q = quizQuestions[currentQuestionIndex];
+        quizCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+        quizQuestionText.textContent = q.question;
+        quizOptionsContainer.innerHTML = '';
 
-    q.options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'action-btn quiz-btn';
-        btn.textContent = opt.text;
-        btn.addEventListener('click', () => selectAnswer(opt.correct, btn));
-        quizOptionsContainer.appendChild(btn);
-    });
-}
+        q.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'action-btn quiz-btn';
+            btn.textContent = opt.text;
+            btn.addEventListener('click', () => selectAnswer(opt.correct, btn));
+            quizOptionsContainer.appendChild(btn);
+        });
+    }
 
-function selectAnswer(isCorrect, selectedBtn) {
-    const allButtons = quizOptionsContainer.querySelectorAll('button');
-    allButtons.forEach(b => b.disabled = true);
+    function selectAnswer(isCorrect, selectedBtn) {
+        const allButtons = quizOptionsContainer.querySelectorAll('button');
+        allButtons.forEach(b => b.disabled = true);
 
-    if (isCorrect) {
-        score++;
-        selectedBtn.style.backgroundColor = '#82c91e';
-        quizResultText.textContent = 'Correct! 💜';
-        quizResultText.style.color = '#ffd1dc';
-    } else {
-        selectedBtn.style.backgroundColor = '#e03131';
-        quizResultText.textContent = 'Not quite, but I still love you! 🥰';
-        quizResultText.style.color = '#ffd1dc';
-        
-        allButtons.forEach(b => {
-            const optData = quizQuestions[currentQuestionIndex].options.find(o => o.text === b.textContent);
-            if (optData && optData.correct) {
-                b.style.backgroundColor = '#82c91e';
+        if (isCorrect) {
+            score++;
+            selectedBtn.style.backgroundColor = '#82c91e';
+            quizResultText.textContent = 'Correct! 💜';
+            quizResultText.style.color = '#ffd1dc';
+        } else {
+            selectedBtn.style.backgroundColor = '#e03131';
+            quizResultText.textContent = 'Not quite, but I still love you! 🥰';
+            quizResultText.style.color = '#ffd1dc';
+            
+            allButtons.forEach(b => {
+                const optData = quizQuestions[currentQuestionIndex].options.find(o => o.text === b.textContent);
+                if (optData && optData.correct) {
+                    b.style.backgroundColor = '#82c91e';
+                }
+            });
+        }
+
+        nextQuestionBtn.style.display = 'inline-block';
+    }
+
+    if (nextQuestionBtn) {
+        nextQuestionBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
             }
         });
     }
 
-    nextQuestionBtn.style.display = 'inline-block';
-}
+    function showResults() {
+        quizPlayScreen.style.display = 'none';
+        quizResultScreen.style.display = 'block';
+        quizFinalScore.textContent = `You scored ${score} out of ${quizQuestions.length}!`;
 
-if (nextQuestionBtn) {
-    nextQuestionBtn.addEventListener('click', () => {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < quizQuestions.length) {
-            loadQuestion();
+        let cuteMsg = "";
+        if (score === quizQuestions.length) {
+            cuteMsg = "A perfect score! You know our story by heart. Fireball is so proud of you! 🐱💜";
+            setTimeout(() => {
+                if (prizeOverlay) prizeOverlay.style.display = 'flex';
+            }, 500);
+        } else if (score >= 7) {
+            cuteMsg = "Amazing job! You remember almost every little detail of our journey together. 🥰";
         } else {
-            showResults();
+            cuteMsg = "Not bad at all! Every day with you is a new favorite memory to make. 💫";
         }
-    });
-}
-
-function showResults() {
-    quizPlayScreen.style.display = 'none';
-    quizResultScreen.style.display = 'block';
-    quizFinalScore.textContent = `You scored ${score} out of ${quizQuestions.length}!`;
-
-    let cuteMsg = "";
-    if (score === quizQuestions.length) {
-        cuteMsg = "A perfect score! You know our story by heart. Fireball is so proud of you! 🐱💜";
-        setTimeout(() => {
-            prizeOverlay.style.display = 'flex';
-        }, 500);
-    } else if (score >= 7) {
-        cuteMsg = "Amazing job! You remember almost every little detail of our journey together. 🥰";
-    } else {
-        cuteMsg = "Not bad at all! Every day with you is a new favorite memory to make. 💫";
+        quizCuteMessage.textContent = cuteMsg;
     }
-    quizCuteMessage.textContent = cuteMsg;
-}
 
-if (restartQuizBtn) {
-    restartQuizBtn.addEventListener('click', () => {
-        quizResultScreen.style.display = 'none';
-        quizStartScreen.style.display = 'block';
-    });
-}
+    if (restartQuizBtn) {
+        restartQuizBtn.addEventListener('click', () => {
+            quizResultScreen.style.display = 'none';
+            quizStartScreen.style.display = 'block';
+        });
+    }
 
-// Prize Selection Handling
-const prizeBtns = document.querySelectorAll('.prize-btn');
-prizeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const prizeName = btn.getAttribute('data-prize');
-        prizeSelectionResult.textContent = `Yay! You selected: ${prizeName} 🎉 Let Antonio know!`;
-        prizeSelectionResult.style.color = '#d680a1';
+    // Prize Selection Handling
+    const prizeBtns = document.querySelectorAll('.prize-btn');
+    prizeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const prizeName = btn.getAttribute('data-prize');
+            if (prizeSelectionResult) {
+                prizeSelectionResult.textContent = `Yay! You selected: ${prizeName} 🎉 Let Antonio know!`;
+                prizeSelectionResult.style.color = '#ffd1dc';
+            }
+        });
     });
+
+    if (closePrizeBtn) {
+        closePrizeBtn.addEventListener('click', () => {
+            if (prizeOverlay) prizeOverlay.style.display = 'none';
+            if (prizeSelectionResult) prizeSelectionResult.textContent = '';
+        });
+    }
+
+    // --- SheetDB Journal History Logic ---
+    const saveJournalBtn = document.getElementById('saveJournalBtn');
+    const journalInput = document.getElementById('journalInput');
+    const journalHistoryList = document.getElementById('journalHistoryList');
+
+    function loadJournalEntries() {
+        if (!journalHistoryList) return;
+        journalHistoryList.innerHTML = '<p style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 13px;">Loading entries... 💜</p>';
+
+        fetch(SHEETDB_API_URL)
+            .then(res => res.json())
+            .then(data => {
+                if (!data || data.length === 0) {
+                    journalHistoryList.innerHTML = '<p style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 13px;">No journal entries yet. Write one above! 💜</p>';
+                    return;
+                }
+
+                journalHistoryList.innerHTML = '';
+                // Reverse data so newest entries show up first if stored sequentially
+                data.reverse().forEach(entry => {
+                    const card = document.createElement('div');
+                    card.className = 'entry-card';
+                    
+                    const entryText = entry.text || entry.content || '';
+                    const entryDate = entry.date || 'Recent entry';
+                    
+                    card.innerHTML = `
+                        <span class="entry-date">${entryDate}</span>
+                        <p style="margin: 0;">${entryText}</p>
+                    `;
+                    journalHistoryList.appendChild(card);
+                });
+            })
+            .catch(err => {
+                console.error('Error loading entries:', err);
+                journalHistoryList.innerHTML = '<p style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 13px;">Could not load entries. Check API URL! 💜</p>';
+            });
+    }
+
+    if (saveJournalBtn && journalInput) {
+        saveJournalBtn.addEventListener('click', () => {
+            const text = journalInput.value.trim();
+            if (!text) return;
+
+            const newEntry = {
+                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                text: text
+            };
+
+            fetch(SHEETDB_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: [newEntry] })
+            })
+            .then(res => res.json())
+            .then(res => {
+                journalInput.value = '';
+                loadJournalEntries();
+            })
+            .catch(err => {
+                console.error('Error saving entry:', err);
+                alert('Failed to save entry. Check your connection or SheetDB URL!');
+            });
+        });
+    }
+
+    loadJournalEntries();
+
+    // --- Mood Update Button Logic ---
+    const sendMoodBtn = document.getElementById('sendMoodBtn');
+    const moodRange = document.getElementById('moodRange');
+    if (sendMoodBtn) {
+        sendMoodBtn.addEventListener('click', () => {
+            alert(`Mood update (${moodRange ? moodRange.value : '3'}/5) saved! 💜`);
+        });
+    }
+
+    // --- Snake Game Modal Logic ---
+    const snakeBtn = document.getElementById('snakeBtn');
+    const snakeOverlay = document.getElementById('snakeOverlay');
+    const closeSnakeBtn = document.getElementById('closeSnakeBtn');
+    if (snakeBtn && snakeOverlay) {
+        snakeBtn.addEventListener('click', () => snakeOverlay.style.display = 'flex');
+    }
+    if (closeSnakeBtn && snakeOverlay) {
+        closeSnakeBtn.addEventListener('click', () => snakeOverlay.style.display = 'none');
+    }
 });
-
-if (closePrizeBtn) {
-    closePrizeBtn.addEventListener('click', () => {
-        prizeOverlay.style.display = 'none';
-        prizeSelectionResult.textContent = '';
-    });
-}
-
-// --- Resynced Journal History Logic ---
-const saveJournalBtn = document.getElementById('saveJournalBtn');
-const journalInput = document.getElementById('journalInput');
-const journalHistoryList = document.getElementById('journalHistoryList');
-
-// Checks both 'journalEntries' and any alternative keys localStorage might have used
-function getStoredJournalEntries() {
-    let entries = JSON.parse(localStorage.getItem('journalEntries'));
-    if (!entries || entries.length === 0) {
-        // Fallback check in case a different key was used previously
-        entries = JSON.parse(localStorage.getItem('entries')) || [];
-    }
-    return entries;
-}
-
-function loadJournalEntries() {
-    if (!journalHistoryList) return;
-    const entries = getStoredJournalEntries();
-    
-    if (entries.length === 0) {
-        journalHistoryList.innerHTML = '<p style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 13px;">No journal entries yet. Write one above! 💜</p>';
-        return;
-    }
-
-    journalHistoryList.innerHTML = '';
-    entries.forEach(entry => {
-        const card = document.createElement('div');
-        card.className = 'entry-card';
-        // Support both property naming conventions (.text vs .content and .date vs .timestamp)
-        const entryText = entry.text || entry.content || '';
-        const entryDate = entry.date || entry.timestamp || 'Recent entry';
-        
-        card.innerHTML = `
-            <span class="entry-date">${entryDate}</span>
-            <p style="margin: 0;">${entryText}</p>
-        `;
-        journalHistoryList.appendChild(card);
-    });
-}
-
-if (saveJournalBtn) {
-    saveJournalBtn.addEventListener('click', () => {
-        const text = journalInput.value.trim();
-        if (!text) return;
-
-        const entries = getStoredJournalEntries();
-        const newEntry = {
-            date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            text: text
-        };
-
-        entries.unshift(newEntry);
-        localStorage.setItem('journalEntries', JSON.stringify(entries));
-        journalInput.value = '';
-        loadJournalEntries();
-    });
-}
-
-// Load and resync entries on page startup
-loadJournalEntries();
-
-// --- Mood Update Button Logic ---
-const sendMoodBtn = document.getElementById('sendMoodBtn');
-const moodRange = document.getElementById('moodRange');
-if (sendMoodBtn) {
-    sendMoodBtn.addEventListener('click', () => {
-        alert(`Mood update (${moodRange.value}/5) saved! 💜`);
-    });
-}
-
-// --- Snake Game Modal Logic ---
-const snakeBtn = document.getElementById('snakeBtn');
-const snakeOverlay = document.getElementById('snakeOverlay');
-const closeSnakeBtn = document.getElementById('closeSnakeBtn');
-if (snakeBtn) {
-    snakeBtn.addEventListener('click', () => snakeOverlay.style.display = 'flex');
-}
-if (closeSnakeBtn) {
-    closeSnakeBtn.addEventListener('click', () => snakeOverlay.style.display = 'none');
-}
