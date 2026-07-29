@@ -1,135 +1,177 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4ecef;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-}
+// --- Snake Game Logic (Fully Mobile & Keyboard Friendly) ---
+document.addEventListener('DOMContentLoaded', () => {
+    const snakeBtn = document.getElementById('snakeBtn');
+    const snakeOverlay = document.getElementById('snakeOverlay');
+    const closeSnakeBtn = document.getElementById('closeSnakeBtn');
+    const startSnakeBtn = document.getElementById('startSnakeBtn');
+    
+    const canvas = document.getElementById('snakeCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    const scoreElement = document.getElementById('snakeScore');
 
-#app {
-    width: 100%;
-    max-width: 600px;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
+    const upBtn = document.getElementById('upBtn');
+    const leftBtn = document.getElementById('leftBtn');
+    const downBtn = document.getElementById('downBtn');
+    const rightBtn = document.getElementById('rightBtn');
 
-header h1 {
-    text-align: center;
-    color: #d680a1;
-    margin-bottom: 25px;
-}
+    let snake = [];
+    let food = {};
+    let dx = 15;
+    let dy = 0;
+    let score = 0;
+    let gameLoop;
+    let changingDirection = false;
+    const gridSize = 15;
 
-.mood-section, .quiz-section, .journal-section, .history-section {
-    background: #ffffff;
-    padding: 15px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(214, 128, 161, 0.1);
-}
+    if (snakeBtn && snakeOverlay) {
+        snakeBtn.addEventListener('click', () => { 
+            snakeOverlay.style.display = 'flex'; 
+        });
+    }
 
-h3 {
-    color: #d680a1;
-    margin-top: 0;
-    font-size: 16px;
-}
+    if (closeSnakeBtn && snakeOverlay) {
+        closeSnakeBtn.addEventListener('click', () => { 
+            snakeOverlay.style.display = 'none'; 
+            clearInterval(gameLoop);
+            window.removeEventListener("keydown", handleKeyDirection);
+        });
+    }
 
-.slider {
-    width: 100%;
-    margin: 10px 0 5px 0;
-    accent-color: #d680a1;
-}
+    if (startSnakeBtn) {
+        startSnakeBtn.addEventListener('click', initGame);
+    }
 
-.slider-numbers {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 2px;
-    box-sizing: border-box;
-    font-size: 13px;
-    color: #d680a1;
-    font-weight: bold;
-    margin-top: 4px;
-    margin-bottom: 10px;
-}
+    function initGame() {
+        clearInterval(gameLoop);
+        snake = [
+            {x: 135, y: 135},
+            {x: 120, y: 135},
+            {x: 105, y: 135}
+        ];
+        dx = 15;
+        dy = 0;
+        score = 0;
+        if (scoreElement) scoreElement.innerText = `Score: ${score}`;
+        spawnFood();
+        
+        window.removeEventListener("keydown", handleKeyDirection);
+        window.addEventListener("keydown", handleKeyDirection);
+        
+        if (upBtn) {
+            upBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('UP'); };
+        }
+        if (downBtn) {
+            downBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('DOWN'); };
+        }
+        if (leftBtn) {
+            leftBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('LEFT'); };
+        }
+        if (rightBtn) {
+            rightBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('RIGHT'); };
+        }
 
-.action-btn {
-    background-color: #d680a1;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
+        gameLoop = setInterval(main, 110);
+    }
 
-.action-btn:hover {
-    background-color: #c06c8d;
-}
+    function main() {
+        if (hasGameEnded()) {
+            clearInterval(gameLoop);
+            if (scoreElement) scoreElement.innerText = `Game Over! Score: ${score}`;
+            window.removeEventListener("keydown", handleKeyDirection);
+            return;
+        }
+        changingDirection = false;
+        clearCanvas();
+        drawFood();
+        advanceSnake();
+        drawSnake();
+    }
 
-textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-sizing: border-box;
-    resize: vertical;
-    margin-bottom: 10px;
-    font-family: inherit;
-}
+    function clearCanvas() {
+        if (!ctx) return;
+        ctx.fillStyle = "#fdf8fa";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
-/* Quiz Styles */
-.btn-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin-top: 15px;
-}
+    function drawSnake() {
+        if (!ctx) return;
+        snake.forEach(part => {
+            ctx.fillStyle = "#d680a1";
+            ctx.strokeStyle = "#ffffff";
+            ctx.fillRect(part.x, part.y, gridSize, gridSize);
+            ctx.strokeRect(part.x, part.y, gridSize, gridSize);
+        });
+    }
 
-.btn-grid button {
-    background-color: #f9f0f3;
-    color: #333;
-    border: 1px solid #d680a1;
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    text-align: left;
-    transition: background-color 0.2s;
-}
+    function advanceSnake() {
+        const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+        snake.unshift(head);
+        
+        const hasEatenFood = snake[0].x === food.x && snake[0].y === food.y;
+        if (hasEatenFood) {
+            score += 10;
+            if (scoreElement) scoreElement.innerText = `Score: ${score}`;
+            spawnFood();
+        } else {
+            snake.pop();
+        }
+    }
 
-.btn-grid button:hover {
-    background-color: #f1d3de;
-}
+    function drawFood() {
+        if (!ctx) return;
+        ctx.fillStyle = "#333";
+        ctx.fillRect(food.x, food.y, gridSize, gridSize);
+    }
 
-.hide {
-    display: none !important;
-}
+    function randomGridPos(min, max) {
+        return Math.round((Math.random() * (max - min) + min) / gridSize) * gridSize;
+    }
 
-/* Journal History Styles */
-#entriesList {
-    max-height: 250px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+    function spawnFood() {
+        if (!canvas) return;
+        food.x = randomGridPos(0, canvas.width - gridSize);
+        food.y = randomGridPos(0, canvas.height - gridSize);
+        snake.forEach(part => {
+            if (part.x === food.x && part.y === food.y) spawnFood();
+        });
+    }
 
-.entry-card {
-    background: #fdf8fa;
-    border-left: 4px solid #d680a1;
-    padding: 10px;
-    border-radius: 4px;
-    font-size: 14px;
-}
+    function changeVel(direction) {
+        if (changingDirection) return;
 
-.entry-date {
-    display: block;
-    font-size: 11px;
-    color: #888;
-    margin-bottom: 4px;
-}
+        const goingUp = dy === -gridSize;
+        const goingDown = dy === gridSize;
+        const goingRight = dx === gridSize;
+        const goingLeft = dx === -gridSize;
+
+        if (direction === 'LEFT' && !goingRight) {
+            dx = -gridSize; dy = 0; changingDirection = true;
+        }
+        if (direction === 'UP' && !goingDown) {
+            dx = 0; dy = -gridSize; changingDirection = true;
+        }
+        if (direction === 'RIGHT' && !goingLeft) {
+            dx = gridSize; dy = 0; changingDirection = true;
+        }
+        if (direction === 'DOWN' && !goingUp) {
+            dx = 0; dy = gridSize; changingDirection = true;
+        }
+    }
+
+    function handleKeyDirection(event) {
+        if (!snakeOverlay || snakeOverlay.style.display === 'none') return;
+
+        const keyPressed = event.keyCode;
+        if (keyPressed === 37 || keyPressed === 65) { event.preventDefault(); changeVel('LEFT'); }
+        if (keyPressed === 38 || keyPressed === 87) { event.preventDefault(); changeVel('UP'); }
+        if (keyPressed === 39 || keyPressed === 68) { event.preventDefault(); changeVel('RIGHT'); }
+        if (keyPressed === 40 || keyPressed === 83) { event.preventDefault(); changeVel('DOWN'); }
+    }
+
+    function hasGameEnded() {
+        for (let i = 4; i < snake.length; i++) {
+            if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
+        }
+        return snake[0].x < 0 || snake[0].x >= canvas.width || snake[0].y < 0 || snake[0].y >= canvas.height;
+    }
+});
