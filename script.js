@@ -6,6 +6,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     loadJournalEntries();
 
+    // --- Mini Quiz Logic ---
+    const quizButtons = document.querySelectorAll('.quiz-btn');
+    const quizResult = document.getElementById('quizResult');
+    if (quizButtons.length > 0 && quizResult) {
+        quizButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const answerType = btn.getAttribute('data-answer');
+                if (answerType === 'correct') {
+                    quizResult.style.color = '#5b9279';
+                    quizResult.innerText = "Correct! River is definitely his favorite human 💜";
+                } else {
+                    quizResult.style.color = '#c26d90';
+                    quizResult.innerText = "Nice try, but you know who rules the house! Try again. 😉";
+                }
+            });
+        });
+    }
+
     // --- Journal Entry / Save Logic ---
     const saveJournalBtn = document.getElementById('saveJournalBtn');
     if (saveJournalBtn) {
@@ -55,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Function to fetch and display past entries ---
+    // --- Function to fetch and display past entries with clean date formatting ---
     function loadJournalEntries() {
         const entriesContainer = document.getElementById('journalHistoryList');
         if (!entriesContainer) return;
@@ -74,7 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     const dateKey = keys.find(k => k.toLowerCase() === 'date') || keys[0];
                     const messageKey = keys.find(k => k.toLowerCase() === 'message' || k.toLowerCase() === 'note' || k.toLowerCase() === 'text') || keys[1];
                     
-                    const entryDate = entry[dateKey] || 'Recent';
+                    let rawDate = entry[dateKey];
+                    let entryDate = 'Recent';
+
+                    if (rawDate) {
+                        if (!isNaN(rawDate) && Number(rawDate) > 40000) {
+                            const excelEpoch = new Date(1899, 11, 30);
+                            const jsDate = new Date(excelEpoch.getTime() + rawDate * 86400000);
+                            entryDate = jsDate.toLocaleString();
+                        } else {
+                            entryDate = rawDate;
+                        }
+                    }
+
                     const entryMessage = entry[messageKey] || entry[keys[1]] || '';
 
                     const card = document.createElement('div');
