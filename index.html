@@ -7,42 +7,63 @@
     <style>
         body {
             background: url('rivercat.jpg') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
             background-size: cover;
+            background-color: #2b1055; /* Fallback color */
             color: #fff0f5;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            box-sizing: border-box;
         }
+
+        /* Mobile fallback for fixed backgrounds which often stretch/zoom on mobile browsers */
+        @media screen and (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+                background-position: center center;
+            }
+        }
+
         .container {
             width: 100%;
             max-width: 600px;
-            background: rgba(75, 34, 110, 0.85);
-            padding: 20px;
+            background: rgba(60, 25, 95, 0.75); /* Lighter opacity for better visibility */
+            padding: 18px;
             border-radius: 15px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 209, 220, 0.18);
-            margin-bottom: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 209, 220, 0.25);
+            margin-bottom: 15px;
+            box-sizing: border-box;
         }
         h1, h2, h3 {
             color: #ffd1dc;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
             text-align: center;
+            margin-top: 10px;
         }
         .action-btn {
             background-color: #7952b3;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            font-size: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             transition: background 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 5px;
         }
         .action-btn:hover {
             background-color: #613d8c;
@@ -52,15 +73,16 @@
             height: 100px;
             border-radius: 8px;
             border: 1px solid #ffd1dc;
-            background: rgba(43, 16, 85, 0.6);
+            background: rgba(30, 10, 50, 0.7);
             color: white;
-            padding: 10px;
+            padding: 12px;
             box-sizing: border-box;
             resize: vertical;
             margin-bottom: 10px;
+            font-size: 15px;
         }
         .entry-card {
-            background: rgba(50, 20, 80, 0.7);
+            background: rgba(45, 15, 75, 0.8);
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 10px;
@@ -69,8 +91,12 @@
         .quiz-btn {
             display: block;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-align: left;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 15px 0;
         }
     </style>
     <!-- EmailJS SDK -->
@@ -80,17 +106,16 @@
 
     <div class="container">
         <h1>Our Digital Safe Space 💜</h1>
-        <p style="text-align: center; color: #ffd1dc;">A space just for us, our memories, and our journey.</p>
+        <p style="text-align: center; color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">A space just for us, our memories, and our journey.</p>
     </div>
 
     <!-- Media Player Section (1 Track) -->
     <div class="container" style="text-align: center;">
         <h3>Our Media Player 🎵</h3>
-        <p id="trackTitleDisplay" style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 14px; margin-bottom: 8px;">Now Playing: Our Song 1</p>
+        <p id="trackTitleDisplay" style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 14px; margin-bottom: 12px;">Now Playing: Our Song 1</p>
         <audio id="audioPlayer"></audio>
-        <div style="display: flex; justify-content: center; gap: 10px;">
+        <div>
             <button id="playTrackBtn" class="action-btn">Play 🎵</button>
-            <button id="nextTrackBtn" class="action-btn" style="display: none;">Next Track ⏭️</button>
         </div>
     </div>
 
@@ -104,7 +129,7 @@
         
         <div id="quizPlayScreen" style="display: none;">
             <p id="quizCounter" style="font-weight: bold; color: #ffd1dc;"></p>
-            <p id="quizQuestionText" style="font-size: 16px; margin-bottom: 15px;"></p>
+            <p id="quizQuestionText" style="font-size: 16px; margin-bottom: 15px; text-shadow: 0 1px 2px rgba(0,0,0,0.8);"></p>
             <div id="quizOptionsContainer"></div>
             <p id="quizResultText" style="font-weight: bold; margin-top: 10px;"></p>
             <button id="nextQuestionBtn" class="action-btn" style="display: none; margin-top: 10px;">Next Question ➔</button>
@@ -118,14 +143,14 @@
         </div>
     </div>
 
-    <!-- Prize Selection Overlay Modal (Updated Prizes) -->
-    <div id="prizeOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000;">
-        <div class="container" style="max-width: 400px; text-align: center;">
+    <!-- Prize Selection Overlay Modal -->
+    <div id="prizeOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; padding: 15px; box-sizing: border-box;">
+        <div class="container" style="max-width: 400px; text-align: center; margin: 0;">
             <h3>🎉 Perfect Score! 🎉</h3>
             <p style="color: #ffd1dc;">Choose your reward:</p>
-            <button class="action-btn prize-btn" data-prize="Meta Horizon Plus" style="margin-bottom: 8px; width: 100%;">Meta Horizon Plus 🥽</button>
-            <button class="action-btn prize-btn" data-prize="Switch Game of Choice" style="margin-bottom: 8px; width: 100%;">Switch Game of Choice 🎮</button>
-            <button class="action-btn prize-btn" data-prize="Item From Your Wishlist" style="margin-bottom: 8px; width: 100%;">Item From Your Wishlist ✨</button>
+            <button class="action-btn prize-btn" data-prize="Meta Horizon Plus" style="margin-bottom: 10px;">Meta Horizon Plus 🥽</button>
+            <button class="action-btn prize-btn" data-prize="Switch Game of Choice" style="margin-bottom: 10px;">Switch Game of Choice 🎮</button>
+            <button class="action-btn prize-btn" data-prize="Item From Your Wishlist" style="margin-bottom: 10px;">Item From Your Wishlist ✨</button>
             <p id="prizeSelectionResult" style="font-weight: bold; margin-top: 10px;"></p>
             <button id="closePrizeBtn" class="action-btn" style="background-color: #e03131; margin-top: 10px;">Close</button>
         </div>
@@ -147,14 +172,12 @@
     <div class="container" style="text-align: center;">
         <h2>Daily Check-in</h2>
         <p>How are you feeling today?</p>
-        <input type="range" id="moodRange" min="1" max="5" value="3" style="width: 80%; margin-bottom: 10px;">
-        <br>
+        <input type="range" id="moodRange" min="1" max="5" value="3">
         <button id="sendMoodBtn" class="action-btn">Send Mood Update 💜</button>
     </div>
 
     <!-- Integrated JavaScript Code -->
     <script>
-        // --- Quiz Data Definition ---
         const quizQuestions = [
             {
                 question: "1. The Origin Story: When was our first call?",
@@ -234,7 +257,6 @@
         let score = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Quiz Logic ---
             const startQuizBtn = document.getElementById('startQuizBtn');
             const quizStartScreen = document.getElementById('quizStartScreen');
             const quizPlayScreen = document.getElementById('quizPlayScreen');
@@ -306,7 +328,7 @@
                     });
                 }
 
-                if (nextQuestionBtn) nextQuestionBtn.style.display = 'inline-block';
+                if (nextQuestionBtn) nextQuestionBtn.style.display = 'block';
             }
 
             if (nextQuestionBtn) {
@@ -346,7 +368,6 @@
                 });
             }
 
-            // --- Prize Selection & EmailJS Notification ---
             const prizeBtns = document.querySelectorAll('.prize-btn');
             prizeBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -378,7 +399,6 @@
                 });
             }
 
-            // --- Resilient Journal History Logic ---
             const saveJournalBtn = document.getElementById('saveJournalBtn');
             const journalInput = document.getElementById('journalInput');
             const journalHistoryList = document.getElementById('journalHistoryList');
@@ -425,7 +445,6 @@
                             const formattedData = data.reverse().map(entry => {
                                 let rawDate = entry.date || entry.timestamp || entry.created_at || Object.values(entry)[0] || 'Recent entry';
                                 
-                                // Convert Excel serial date numbers to normal readable dates
                                 if (!isNaN(rawDate) && Number(rawDate) > 40000) {
                                     const excelDate = Number(rawDate);
                                     const jsDate = new Date((excelDate - (25567 + 2)) * 86400 * 1000);
@@ -482,7 +501,6 @@
 
             loadJournalEntries();
 
-            // --- Mood Update Button Logic ---
             const sendMoodBtn = document.getElementById('sendMoodBtn');
             const moodRange = document.getElementById('moodRange');
             if (sendMoodBtn) {
@@ -491,7 +509,6 @@
                 });
             }
 
-            // --- 1-Track Media Player Logic (`track1.mp3`) ---
             const playlist = [
                 { title: "Our Song 1", src: "track1.mp3" }
             ];
