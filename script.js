@@ -1,4 +1,4 @@
-// --- Snake Game Logic (Mobile Friendly) ---
+// --- Snake Game Logic (Fully Mobile & Keyboard Friendly) ---
 document.addEventListener('DOMContentLoaded', () => {
     const snakeBtn = document.getElementById('snakeBtn');
     const snakeOverlay = document.getElementById('snakeOverlay');
@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas ? canvas.getContext('2d') : null;
     const scoreElement = document.getElementById('snakeScore');
 
-    // On-screen control buttons
     const upBtn = document.getElementById('upBtn');
     const leftBtn = document.getElementById('leftBtn');
     const downBtn = document.getElementById('downBtn');
@@ -34,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeSnakeBtn.addEventListener('click', () => { 
             snakeOverlay.style.display = 'none'; 
             clearInterval(gameLoop);
+            window.removeEventListener("keydown", handleKeyDirection);
         });
     }
 
@@ -54,10 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scoreElement) scoreElement.innerText = `Score: ${score}`;
         spawnFood();
         
-        document.removeEventListener("keydown", handleKeyDirection);
-        document.addEventListener("keydown", handleKeyDirection);
+        window.removeEventListener("keydown", handleKeyDirection);
+        window.addEventListener("keydown", handleKeyDirection);
         
-        // Instant mobile response using pointerdown
         if (upBtn) {
             upBtn.onpointerdown = (e) => { e.preventDefault(); changeVel('UP'); };
         }
@@ -78,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (hasGameEnded()) {
             clearInterval(gameLoop);
             if (scoreElement) scoreElement.innerText = `Game Over! Score: ${score}`;
+            window.removeEventListener("keydown", handleKeyDirection);
             return;
         }
         changingDirection = false;
@@ -159,6 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleKeyDirection(event) {
+        if (!snakeOverlay || snakeOverlay.style.display === 'none') return;
+
         const keyPressed = event.keyCode;
         if (keyPressed === 37 || keyPressed === 65) { event.preventDefault(); changeVel('LEFT'); }
         if (keyPressed === 38 || keyPressed === 87) { event.preventDefault(); changeVel('UP'); }
