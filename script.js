@@ -119,7 +119,6 @@ function loadQuestion() {
 }
 
 function selectAnswer(isCorrect, selectedBtn) {
-    // Disable all option buttons after selection
     const allButtons = quizOptionsContainer.querySelectorAll('button');
     allButtons.forEach(b => b.disabled = true);
 
@@ -127,13 +126,12 @@ function selectAnswer(isCorrect, selectedBtn) {
         score++;
         selectedBtn.style.backgroundColor = '#82c91e';
         quizResultText.textContent = 'Correct! 💜';
-        quizResultText.style.color = '#2b8a3e';
+        quizResultText.style.color = '#ffd1dc';
     } else {
         selectedBtn.style.backgroundColor = '#e03131';
         quizResultText.textContent = 'Not quite, but I still love you! 🥰';
-        quizResultText.style.color = '#c92a2a';
+        quizResultText.style.color = '#ffd1dc';
         
-        // Highlight the correct one
         allButtons.forEach(b => {
             const optData = quizQuestions[currentQuestionIndex].options.find(o => o.text === b.textContent);
             if (optData && optData.correct) {
@@ -164,7 +162,6 @@ function showResults() {
     let cuteMsg = "";
     if (score === quizQuestions.length) {
         cuteMsg = "A perfect score! You know our story by heart. Fireball is so proud of you! 🐱💜";
-        // Trigger Prize Popup for a perfect score
         setTimeout(() => {
             prizeOverlay.style.display = 'flex';
         }, 500);
@@ -198,4 +195,71 @@ if (closePrizeBtn) {
         prizeOverlay.style.display = 'none';
         prizeSelectionResult.textContent = '';
     });
+}
+
+// --- Journal History Logic Fix ---
+const saveJournalBtn = document.getElementById('saveJournalBtn');
+const journalInput = document.getElementById('journalInput');
+const journalHistoryList = document.getElementById('journalHistoryList');
+
+function loadJournalEntries() {
+    if (!journalHistoryList) return;
+    const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+    
+    if (entries.length === 0) {
+        journalHistoryList.innerHTML = '<p style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 13px;">No journal entries yet. Write one above! 💜</p>';
+        return;
+    }
+
+    journalHistoryList.innerHTML = '';
+    entries.forEach(entry => {
+        const card = document.createElement('div');
+        card.className = 'entry-card';
+        card.innerHTML = `
+            <span class="entry-date">${entry.date}</span>
+            <p style="margin: 0;">${entry.text}</p>
+        `;
+        journalHistoryList.appendChild(card);
+    });
+}
+
+if (saveJournalBtn) {
+    saveJournalBtn.addEventListener('click', () => {
+        const text = journalInput.value.trim();
+        if (!text) return;
+
+        const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+        const newEntry = {
+            date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            text: text
+        };
+
+        entries.unshift(newEntry);
+        localStorage.setItem('journalEntries', JSON.stringify(entries));
+        journalInput.value = '';
+        loadJournalEntries();
+    });
+}
+
+// Load entries on page startup
+loadJournalEntries();
+
+// --- Mood Update Button Logic ---
+const sendMoodBtn = document.getElementById('sendMoodBtn');
+const moodRange = document.getElementById('moodRange');
+if (sendMoodBtn) {
+    sendMoodBtn.addEventListener('click', () => {
+        alert(`Mood update (${moodRange.value}/5) saved! 💜`);
+    });
+}
+
+// --- Snake Game Modal Logic ---
+const snakeBtn = document.getElementById('snakeBtn');
+const snakeOverlay = document.getElementById('snakeOverlay');
+const closeSnakeBtn = document.getElementById('closeSnakeBtn');
+if (snakeBtn) {
+    snakeBtn.addEventListener('click', () => snakeOverlay.style.display = 'flex');
+}
+if (closeSnakeBtn) {
+    closeSnakeBtn.addEventListener('click', () => snakeOverlay.style.display = 'none');
 }
