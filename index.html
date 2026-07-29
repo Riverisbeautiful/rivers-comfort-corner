@@ -13,6 +13,13 @@
     <div class="journal-container">
         <h1>Our Safe Space 💜</h1>
 
+        <!-- Toby's Picture Section -->
+        <div class="section-block toby-card">
+            <h3>Our Favorite Boy 🐾</h3>
+            <img src="toby.jpg" alt="Toby" class="toby-img">
+            <p class="toby-caption">The most handsome boy in the world.</p>
+        </div>
+
         <!-- Mood Tracker Section -->
         <div class="section-block">
             <h3>How are you feeling today?</h3>
@@ -25,6 +32,18 @@
                 <span>5</span>
             </div>
             <button id="sendMoodBtn" class="action-btn">Send Mood Update</button>
+        </div>
+
+        <!-- Mini Quiz Section -->
+        <div class="section-block quiz-section">
+            <h3>Mini Quiz 🧩</h3>
+            <p id="quizQuestion">Who is Toby's absolute favorite human?</p>
+            <div class="quiz-options">
+                <button class="action-btn quiz-btn" data-answer="wrong">Antonio</button>
+                <button class="action-btn quiz-btn" data-answer="correct">River</button>
+                <button class="action-btn quiz-btn" data-answer="wrong">Whichever one has treats</button>
+            </div>
+            <p id="quizResult" style="margin-top: 8px; font-weight: bold; font-size: 14px;"></p>
         </div>
 
         <!-- Journal Entry Section -->
