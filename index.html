@@ -5,58 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Digital Journal</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Include EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
-<body>
-    <div id="app">
-        <header>
-            <h1>Our Safe Space 💜</h1>
-        </header>
+<body style="background: url('toby.jpg') no-repeat center center fixed; background-size: cover;">
 
-        <!-- Mood Section with Number Scale -->
-        <div class="mood-section">
-            <h3>How are you feeling today?</h3>
-            <input type="range" min="1" max="5" value="3" class="slider" id="moodSlider">
-            <div class="slider-numbers">
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-            </div>
-            <button id="sendMoodBtn" class="action-btn">Send Mood Update</button>
+    <div class="journal-container" style="background: rgba(255, 255, 255, 0.85); padding: 20px; border-radius: 12px; max-width: 600px; margin: 40px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <h1>Our Digital Journal 💜</h1>
+        
+        <!-- Other sections (Journal Entries, Mood Tracker, Quiz, etc.) go here -->
+
+        <!-- Extras Section: Play Snake Button -->
+        <div class="extras-section" style="margin-top: 20px; text-align: center;">
+            <button id="snakeBtn" class="action-btn">Play Snake 🐍</button>
         </div>
+    </div>
 
-        <!-- Mini Quiz Section -->
-        <div class="quiz-section">
-            <h3>Mini Quiz 💜</h3>
-            <div id="quiz-container">
-                <p id="question-text">Loading question...</p>
-                <div id="answer-buttons" class="btn-grid"></div>
+    <!-- Snake Game Overlay Modal -->
+    <div id="snakeOverlay" class="overlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+        <div class="overlay-content" style="background: #ffffff; padding: 20px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; max-width: 320px; width: 90%; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <h3 style="margin-bottom: 10px; color: #d680a1;">Classic Snake 🐍</h3>
+            <canvas id="snakeCanvas" width="280" height="280" style="background: #fdf8fa; border: 2px solid #d680a1; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05);"></canvas>
+            <p id="snakeScore" style="color: #d680a1; font-weight: bold; margin: 8px 0;">Score: 0</p>
+            
+            <!-- On-Screen D-Pad for Mobile -->
+            <div class="snake-controls" style="display: grid; grid-template-columns: repeat(3, 50px); gap: 5px; margin-bottom: 15px; justify-content: center;">
+                <div></div>
+                <button id="upBtn" class="action-btn" style="padding: 10px; font-size: 16px; cursor: pointer; touch-action: manipulation;">⬆️</button>
+                <div></div>
+                <button id="leftBtn" class="action-btn" style="padding: 10px; font-size: 16px; cursor: pointer; touch-action: manipulation;">⬅️</button>
+                <button id="downBtn" class="action-btn" style="padding: 10px; font-size: 16px; cursor: pointer; touch-action: manipulation;">⬇️</button>
+                <button id="rightBtn" class="action-btn" style="padding: 10px; font-size: 16px; cursor: pointer; touch-action: manipulation;">➡️</button>
             </div>
-            <div id="score-container" class="hide">
-                <p id="score-text"></p>
-                <button id="restart-btn" class="hide">Play Again</button>
-            </div>
-        </div>
 
-        <!-- Journal Entry Section -->
-        <div class="journal-section">
-            <h3>Journal Entry</h3>
-            <textarea id="riverNote" placeholder="Write your thoughts here..."></textarea>
-            <button id="sendBtn" class="action-btn">Save Entry</button>
-        </div>
-
-        <!-- Journal History Section -->
-        <div class="history-section">
-            <h3>Journal History 📖</h3>
-            <div id="entriesList">
-                <p style="font-size:12px; color:#888; text-align:center;">Loading entries...</p>
+            <div style="display: flex; gap: 10px; width: 100%; justify-content: center;">
+                <button id="startSnakeBtn" class="action-btn" style="cursor: pointer;">Start Game</button>
+                <button id="closeSnakeBtn" class="action-btn" style="cursor: pointer;">Close</button>
             </div>
         </div>
     </div>
 
+    <!-- Your Main Script File -->
     <script src="script.js"></script>
 </body>
 </html>
