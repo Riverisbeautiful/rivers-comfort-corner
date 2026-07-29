@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 prizeSelectionResult.style.color = '#ffd1dc';
             }
 
-            // Using your retrieved EmailJS credentials
             if (window.emailjs) {
                 emailjs.send('service_xac90mk', 'template_q4hqvuc', {
                     prize_name: prizeName,
@@ -223,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Resilient Journal History Logic (With Custom Text Styling) ---
+    // --- Resilient Journal History Logic ---
     const saveJournalBtn = document.getElementById('saveJournalBtn');
     const journalInput = document.getElementById('journalInput');
     const journalHistoryList = document.getElementById('journalHistoryList');
@@ -325,53 +324,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Snake Game Logic & Modal ---
-    const snakeBtn = document.getElementById('snakeBtn');
-    const snakeOverlay = document.getElementById('snakeOverlay');
-    const closeSnakeBtn = document.getElementById('closeSnakeBtn');
-    const startSnakeBtn = document.getElementById('startSnakeBtn');
-    const snakeCanvas = document.getElementById('snakeCanvas');
+    // --- 3-Track Media Player Logic ---
+    const playlist = [
+        { title: "Our Song 1", src: "track1.mp3" },
+        { title: "Our Song 2", src: "track2.mp3" },
+        { title: "Our Song 3", src: "track3.mp3" }
+    ];
+    
+    let currentTrackIndex = 0;
+    const audioPlayer = document.getElementById('audioPlayer');
+    const trackTitleDisplay = document.getElementById('trackTitleDisplay');
+    const playTrackBtn = document.getElementById('playTrackBtn');
+    const nextTrackBtn = document.getElementById('nextTrackBtn');
 
-    if (snakeBtn && snakeOverlay) {
-        snakeBtn.addEventListener('click', () => {
-            snakeOverlay.style.display = 'flex';
-        });
+    function loadTrack(index) {
+        if (!audioPlayer) return;
+        audioPlayer.src = playlist[index].src;
+        if (trackTitleDisplay) {
+            trackTitleDisplay.textContent = `Now Playing: ${playlist[index].title}`;
+        }
     }
 
-    if (closeSnakeBtn && snakeOverlay) {
-        closeSnakeBtn.addEventListener('click', () => {
-            snakeOverlay.style.display = 'none';
-        });
-    }
+    if (audioPlayer) {
+        loadTrack(currentTrackIndex);
 
-    if (startSnakeBtn && snakeCanvas) {
-        startSnakeBtn.addEventListener('click', () => {
-            const ctx = snakeCanvas.getContext('2d');
-            let snake = [{x: 10, y: 10}];
-            let food = {x: 5, y: 5};
-            let dx = 1;
-            let dy = 0;
-            
-            if (window.snakeInterval) clearInterval(window.snakeInterval);
-
-            window.snakeInterval = setInterval(() => {
-                const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-                snake.unshift(head);
-                if (head.x === food.x && head.y === food.y) {
-                    food = {x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20)};
+        if (playTrackBtn) {
+            playTrackBtn.addEventListener('click', () => {
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    playTrackBtn.textContent = 'Pause 🎵';
                 } else {
-                    snake.pop();
+                    audioPlayer.pause();
+                    playTrackBtn.textContent = 'Play 🎵';
                 }
+            });
+        }
 
-                ctx.fillStyle = '#222';
-                ctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
-                
-                ctx.fillStyle = '#82c91e';
-                snake.forEach(part => ctx.fillRect(part.x * 10, part.y * 10, 9, 9));
-
-                ctx.fillStyle = '#ff6b6b';
-                ctx.fillRect(food.x * 10, food.y * 10, 9, 9);
-            }, 100);
-        });
+        if (nextTrackBtn) {
+            nextTrackBtn.addEventListener('click', () => {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                loadTrack(currentTrackIndex);
+                audioPlayer.play();
+                if (playTrackBtn) playTrackBtn.textContent = 'Pause 🎵';
+            });
+        }
     }
 });
