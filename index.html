@@ -83,14 +83,14 @@
         <p style="text-align: center; color: #ffd1dc;">A space just for us, our memories, and our journey.</p>
     </div>
 
-    <!-- Media Player Section -->
+    <!-- Media Player Section (1 Track) -->
     <div class="container" style="text-align: center;">
         <h3>Our Media Player 🎵</h3>
         <p id="trackTitleDisplay" style="color: #ffd1dc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-size: 14px; margin-bottom: 8px;">Now Playing: Our Song 1</p>
         <audio id="audioPlayer"></audio>
         <div style="display: flex; justify-content: center; gap: 10px;">
             <button id="playTrackBtn" class="action-btn">Play 🎵</button>
-            <button id="nextTrackBtn" class="action-btn">Next Track ⏭️</button>
+            <button id="nextTrackBtn" class="action-btn" style="display: none;">Next Track ⏭️</button>
         </div>
     </div>
 
@@ -118,14 +118,14 @@
         </div>
     </div>
 
-    <!-- Prize Selection Overlay Modal -->
+    <!-- Prize Selection Overlay Modal (Updated Prizes) -->
     <div id="prizeOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000;">
         <div class="container" style="max-width: 400px; text-align: center;">
             <h3>🎉 Perfect Score! 🎉</h3>
             <p style="color: #ffd1dc;">Choose your reward:</p>
-            <button class="action-btn prize-btn" data-prize="Movie Night & Snacks" style="margin-bottom: 8px; width: 100%;">Movie Night & Snacks 🍿</button>
-            <button class="action-btn prize-btn" data-prize="Head Massage & Cuddles" style="margin-bottom: 8px; width: 100%;">Head Massage & Cuddles 🥰</button>
-            <button class="action-btn prize-btn" data-prize="Favorite Takeout Dinner" style="margin-bottom: 8px; width: 100%;">Favorite Takeout Dinner 🍕</button>
+            <button class="action-btn prize-btn" data-prize="Meta Horizon Plus" style="margin-bottom: 8px; width: 100%;">Meta Horizon Plus 🥽</button>
+            <button class="action-btn prize-btn" data-prize="Switch Game of Choice" style="margin-bottom: 8px; width: 100%;">Switch Game of Choice 🎮</button>
+            <button class="action-btn prize-btn" data-prize="Item From Your Wishlist" style="margin-bottom: 8px; width: 100%;">Item From Your Wishlist ✨</button>
             <p id="prizeSelectionResult" style="font-weight: bold; margin-top: 10px;"></p>
             <button id="closePrizeBtn" class="action-btn" style="background-color: #e03131; margin-top: 10px;">Close</button>
         </div>
@@ -491,22 +491,20 @@
                 });
             }
 
-            // --- 3-Track Media Player Logic ---
+            // --- 1-Track Media Player Logic (`track1.mp3`) ---
             const playlist = [
-                { title: "Our Song 1", src: "track1.mp3" },
-                { title: "Our Song 2", src: "track2.mp3" },
-                { title: "Our Song 3", src: "track3.mp3" }
+                { title: "Our Song 1", src: "track1.mp3" }
             ];
             
             let currentTrackIndex = 0;
             const audioPlayer = document.getElementById('audioPlayer');
             const trackTitleDisplay = document.getElementById('trackTitleDisplay');
             const playTrackBtn = document.getElementById('playTrackBtn');
-            const nextTrackBtn = document.getElementById('nextTrackBtn');
 
             function loadTrack(index) {
                 if (!audioPlayer) return;
                 audioPlayer.src = playlist[index].src;
+                audioPlayer.load();
                 if (trackTitleDisplay) {
                     trackTitleDisplay.textContent = `Now Playing: ${playlist[index].title}`;
                 }
@@ -518,21 +516,14 @@
                 if (playTrackBtn) {
                     playTrackBtn.addEventListener('click', () => {
                         if (audioPlayer.paused) {
-                            audioPlayer.play();
+                            audioPlayer.play().catch(err => {
+                                console.log("Autoplay/playback blocked by browser:", err);
+                            });
                             playTrackBtn.textContent = 'Pause 🎵';
                         } else {
                             audioPlayer.pause();
                             playTrackBtn.textContent = 'Play 🎵';
                         }
-                    });
-                }
-
-                if (nextTrackBtn) {
-                    nextTrackBtn.addEventListener('click', () => {
-                        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-                        loadTrack(currentTrackIndex);
-                        audioPlayer.play();
-                        if (playTrackBtn) playTrackBtn.textContent = 'Pause 🎵';
                     });
                 }
             }
